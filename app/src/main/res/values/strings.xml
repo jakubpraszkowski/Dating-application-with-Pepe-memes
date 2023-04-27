@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">meme_dating</string>
+    <string name="login">Login</string>
+    <string name="returntopreviouspage">returnToPreviousPage</string>
+    <string name="Password">Password</string>
+    <string name="Register">Register</string>
 </resources>
