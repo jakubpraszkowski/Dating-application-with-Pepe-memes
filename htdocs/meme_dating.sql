@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 03 Maj 2023, 13:33
+-- Czas generowania: 03 Maj 2023, 21:28
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -49,6 +49,7 @@ INSERT INTO `categories` (`cat_id`, `title`) VALUES
 CREATE TABLE `memes` (
   `m_id` int(11) NOT NULL,
   `url` text COLLATE utf8_bin NOT NULL,
+  `title` text COLLATE utf8_bin NOT NULL,
   `cat_id` int(11) NOT NULL,
   `u_id` int(11) NOT NULL,
   `add_date` date DEFAULT NULL
@@ -58,19 +59,19 @@ CREATE TABLE `memes` (
 -- Zrzut danych tabeli `memes`
 --
 
-INSERT INTO `memes` (`m_id`, `url`, `cat_id`, `u_id`, `add_date`) VALUES
-(1, 'https://i.imgur.com/u4h4OoK.jpeg', 1, 1, '2023-05-01'),
-(2, 'https://i.imgur.com/Li1OKSU.jpeg', 1, 1, '2023-05-01'),
-(3, 'https://i.imgur.com/2I8Wld5.jpeg', 1, 1, '2023-05-16'),
-(4, 'https://i.imgur.com/6b0wcn7.jpeg', 1, 1, '2023-05-26'),
-(5, 'https://i.imgur.com/eSEyP0I.jpeg', 1, 1, '2023-05-06'),
-(6, 'https://i.imgur.com/P978Mos.jpeg', 1, 1, '2023-05-09'),
-(7, 'https://i.imgur.com/Y8PYNHm.jpeg', 2, 1, '2023-05-03'),
-(8, 'https://i.imgur.com/Y8PYNHm.jpeg', 2, 1, '2023-05-03'),
-(9, 'https://i.imgur.com/8JeqfAO.jpeg', 2, 1, '2023-05-03'),
-(10, 'https://i.imgur.com/8JeqfAO.jpeg', 2, 1, '2023-05-03'),
-(11, 'https://i.imgur.com/i3PP4Hl.png', 2, 1, '2023-05-03'),
-(12, 'https://i.imgur.com/i3PP4Hl.png', 2, 1, '2023-05-03');
+INSERT INTO `memes` (`m_id`, `url`, `title`, `cat_id`, `u_id`, `add_date`) VALUES
+(1, 'https://i.imgur.com/u4h4OoK.jpeg', 'some title', 1, 1, '2023-05-01'),
+(2, 'https://i.imgur.com/Li1OKSU.jpeg', 'nice meme', 1, 1, '2023-05-01'),
+(3, 'https://i.imgur.com/2I8Wld5.jpeg', 'xdddd', 1, 1, '2023-05-16'),
+(4, 'https://i.imgur.com/6b0wcn7.jpeg', 'nice meme', 1, 1, '2023-05-26'),
+(5, 'https://i.imgur.com/eSEyP0I.jpeg', 'hiiiiii', 1, 1, '2023-05-06'),
+(6, 'https://i.imgur.com/P978Mos.jpeg', 'UwU', 1, 1, '2023-05-09'),
+(7, 'https://i.imgur.com/Y8PYNHm.jpeg', 'that so funny', 2, 1, '2023-05-03'),
+(8, 'https://i.imgur.com/Y8PYNHm.jpeg', 'true', 2, 1, '2023-05-03'),
+(9, 'https://i.imgur.com/8JeqfAO.jpeg', 'another title', 2, 1, '2023-05-03'),
+(10, 'https://i.imgur.com/8JeqfAO.jpeg', 'omg', 2, 1, '2023-05-03'),
+(11, 'https://i.imgur.com/i3PP4Hl.png', 'funny', 2, 1, '2023-05-03'),
+(12, 'https://i.imgur.com/i3PP4Hl.png', 'cringe', 2, 1, '2023-05-03');
 
 -- --------------------------------------------------------
 

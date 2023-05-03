@@ -2,6 +2,7 @@ package com.example.meme_dating.ui.categoryMain;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +17,37 @@ import com.example.meme_dating.Meme;
 import com.example.meme_dating.R;
 import com.example.meme_dating.RecylerViewAdapter;
 import com.example.meme_dating.databinding.FragmentMemeScrollingBinding;
+import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 public class CategoryMainFragment extends Fragment {
     public RecyclerView recyclerView;
     public RecylerViewAdapter recylerViewAdapter;
     public ArrayList<Meme> memesArrayList = new ArrayList<>();
     boolean isLoading = false;
     public FragmentMemeScrollingBinding binding;
+    public int cat_id;
+    public int memesInThatCategory;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        cat_id = 0;
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field =  {"cat_id"};
+                String[] data = {String.valueOf(cat_id)};
+                PutData putData = new PutData("http://10.0.2.2/memesInCategoryCheck.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        Log.d("meme", "memes in that category: "+putData.getResult());
+                        memesInThatCategory = Integer.parseInt(putData.getResult());
+                    }
+                }
+            }
+        });
 
         CategoryMainViewModel categoryMainViewModel = new ViewModelProvider(this).get(CategoryMainViewModel.class);
 
@@ -36,20 +57,83 @@ public class CategoryMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
 
-        populateData();
+        firstMemes();
         initAdapter();
         initScrollListener();
 
         return root;
     }
     public void newMeme(){
-        Meme newMeme = new Meme(1,"https://i.imgur.com/u4h4OoK.jpeg",1,"main"+memesArrayList.size(), new Date(),1);
-        memesArrayList.add(newMeme);
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field = {"cat_id", "lastMemeId"};
+                String[] data = {String.valueOf(cat_id), memesArrayList.get(memesArrayList.size()-1).m_idTostring()};
+                PutData putData = new PutData("http://10.0.2.2/getNewMeme.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        try {
+                            JSONObject obj = new JSONObject(putData.getResult());
+
+                            Log.d("My App", obj.toString());
+
+                            memesArrayList.add(
+                                new Meme(
+                                    obj.getInt("m_id"),
+                                    obj.getString("url"),
+                                    obj.getInt("cat_id"),
+                                    obj.getString("title"),
+                                    new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
+                                    obj.getInt("u_id")
+                                )
+                            );
+                            recylerViewAdapter.notifyDataSetChanged();
+                        } catch (Throwable t) {
+                            Log.e("My App", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                        }
+
+                    }
+                }
+            }
+        });
     }
 
-    public void populateData() {
+    public void firstMemes() {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field = {"cat_id"};
+                String[] data = {String.valueOf(cat_id)};
+                PutData putData = new PutData("http://10.0.2.2/getLatestMeme.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        try {
+                            JSONObject obj = new JSONObject(putData.getResult());
+
+                            Log.d("My App", obj.toString());
+
+                            memesArrayList.add(
+                                    new Meme(
+                                            obj.getInt("m_id"),
+                                            obj.getString("url"),
+                                            obj.getInt("cat_id"),
+                                            obj.getString("title"),
+                                            new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
+                                            obj.getInt("u_id")
+                                    )
+                            );
+                            recylerViewAdapter.notifyDataSetChanged();
+                        } catch (Throwable t) {
+                            Log.e("My App", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                        }
+                    }
+                }
+            }
+        });
         int i = 0;
-        while (i < 5) {
+        while (i < 4){
             newMeme();
             i++;
         }
@@ -57,6 +141,8 @@ public class CategoryMainFragment extends Fragment {
     // LoadMore() method is used to implement
     // the functionality of load more
     public void loadMore() {
+
+        if(memesArrayList.size()>=memesInThatCategory){return;}
 
         memesArrayList.add(null);
         recylerViewAdapter.notifyItemInserted(memesArrayList.size() - 1);
@@ -74,6 +160,8 @@ public class CategoryMainFragment extends Fragment {
                 int nextLimit = currentSize + 3;
 
                 while (currentSize - 1 < nextLimit) {
+
+                    if(memesArrayList.size()>=memesInThatCategory){return;}
 
                     newMeme();
                     currentSize++;

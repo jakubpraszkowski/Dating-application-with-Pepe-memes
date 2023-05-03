@@ -22,4 +22,5 @@ public class Meme {
     public String toString() {
         return title;
     }
+    public String m_idTostring(){ return String.valueOf(m_id); }
 }

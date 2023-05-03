@@ -66,6 +66,68 @@ class DataBase
         } else return false;
     }
 
+    function checkMemesInCategory($cat_id)
+    {
+        if($cat_id == 0)
+        {
+            $this->sql = "SELECT COUNT(m_id) FROM memes";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $count = $row['COUNT(m_id)'];
+            return $count;
+        }
+        else
+        {
+            $cat_id = $this->prepareData($cat_id);
+            $this->sql = "SELECT COUNT(m_id) FROM memes WHERE cat_id = '" . $cat_id . "'";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $count = $row['COUNT(m_id)'];
+            return $count;
+        }
+    }
+    function getNewMeme($cat_id, $lastMemeId)
+    {
+        if($cat_id == 0)
+        {
+            $lastMemeId = $this->prepareData($lastMemeId);
+            $this->sql = "SELECT * FROM memes WHERE m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $myJSON = json_encode($row);
+            return $myJSON;
+        }
+        else
+        {
+            $cat_id = $this->prepareData($cat_id);
+            $lastMemeId = $this->prepareData($lastMemeId);
+            $this->sql = "SELECT * FROM memes WHERE cat_id = '" . $cat_id . "' AND m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $myJSON = json_encode($row);
+            return $myJSON;
+        }
+    }
+    function getLatestMeme($cat_id)
+    {
+        if($cat_id == 0)
+        {
+            $this->sql = "SELECT * FROM memes ORDER BY m_id DESC LIMIT 1";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $myJSON = json_encode($row);
+            return $myJSON;
+        }
+        else
+        {
+            $cat_id = $this->prepareData($cat_id);
+            $this->sql = "SELECT * FROM memes ORDER BY m_id DESC LIMIT 1";
+            $result = mysqli_query($this->connect, $this->sql);
+            $row = mysqli_fetch_assoc($result);
+            $myJSON = json_encode($row);
+            return $myJSON;
+        }
+    }
 }
 
 ?>
