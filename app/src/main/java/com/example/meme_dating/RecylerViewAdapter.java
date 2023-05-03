@@ -1,8 +1,5 @@
 package com.example.meme_dating;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -99,8 +91,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
-
-
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText("author "+mItemList.get(position).u_id);
         viewHolder.dateTextView.setText(DateFor.format(mItemList.get(position).uploadDate));
@@ -108,7 +98,5 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         String imageUri = mItemList.get(position).url;
 
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
-
-
     }
 }
