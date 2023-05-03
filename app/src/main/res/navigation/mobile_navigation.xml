@@ -3,23 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_main">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.meme_dating.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_main"
+        android:name="com.example.meme_dating.ui.categoryMain.CategoryMainFragment"
+        android:label="@string/menu_main"
+        tools:layout="@layout/fragment_meme_scrolling" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.meme_dating.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_category1"
+        android:name="com.example.meme_dating.ui.category1.Category1Fragment"
+        android:label="@string/menu_category1"
+        tools:layout="@layout/fragment_meme_scrolling" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.meme_dating.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+
 </navigation>
