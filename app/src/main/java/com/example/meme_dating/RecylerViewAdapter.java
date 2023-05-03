@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,10 +65,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMeme;
-        TextView titleTextView;
-        TextView authorTextView;
-        TextView dateTextView;
-        TextView categoryText;
+        TextView titleTextView, authorTextView, dateTextView, categoryText, textID;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +74,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             authorTextView = itemView.findViewById(R.id.authorLink);
             dateTextView= itemView.findViewById(R.id.dateTextView);
             categoryText= itemView.findViewById(R.id.categoryText);
+            textID= itemView.findViewById(R.id.textID);
         }
     }
 
@@ -93,6 +92,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
+        viewHolder.textID.setText(String.valueOf(mItemList.get(position).u_id));
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
         viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
@@ -101,5 +101,12 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         String imageUri = mItemList.get(position).url;
 
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
+
+        viewHolder.authorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "open profile of user with id: "+mItemList.get(position).u_id, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
