@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -23,11 +24,11 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
+        android:text="title"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/categoryText"
         app:layout_constraintTop_toBottomOf="@+id/authorLink" />
 
     <TextView
@@ -36,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:text="author"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
+        android:text="date"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/authorLink"
         app:layout_constraintStart_toEndOf="@+id/authorLink"
@@ -71,4 +74,14 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewMeme"
         app:srcCompat="@android:drawable/arrow_down_float"
         android:contentDescription="dislike" />
+
+    <TextView
+        android:id="@+id/categoryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="category"
+        app:layout_constraintBottom_toBottomOf="@+id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

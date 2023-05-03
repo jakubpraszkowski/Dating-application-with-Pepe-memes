@@ -76,21 +76,22 @@ public class CategoryMainFragment extends Fragment {
                         try {
                             JSONObject obj = new JSONObject(putData.getResult());
 
-                            Log.d("My App", obj.toString());
+                            Log.d("new meme", obj.toString());
 
                             memesArrayList.add(
                                 new Meme(
                                     obj.getInt("m_id"),
                                     obj.getString("url"),
-                                    obj.getInt("cat_id"),
+                                    obj.getString("cat_title"),
                                     obj.getString("title"),
                                     new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
-                                    obj.getInt("u_id")
+                                    obj.getInt("u_id"),
+                                    obj.getString("name")
                                 )
                             );
                             recylerViewAdapter.notifyDataSetChanged();
                         } catch (Throwable t) {
-                            Log.e("My App", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                            Log.e("new meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
                         }
 
                     }
@@ -112,21 +113,22 @@ public class CategoryMainFragment extends Fragment {
                         try {
                             JSONObject obj = new JSONObject(putData.getResult());
 
-                            Log.d("My App", obj.toString());
+                            Log.d("first meme", obj.toString());
 
                             memesArrayList.add(
                                     new Meme(
                                             obj.getInt("m_id"),
                                             obj.getString("url"),
-                                            obj.getInt("cat_id"),
+                                            obj.getString("cat_title"),
                                             obj.getString("title"),
                                             new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
-                                            obj.getInt("u_id")
+                                            obj.getInt("u_id"),
+                                            obj.getString("name")
                                     )
                             );
                             recylerViewAdapter.notifyDataSetChanged();
                         } catch (Throwable t) {
-                            Log.e("My App", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                            Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
                         }
                     }
                 }
