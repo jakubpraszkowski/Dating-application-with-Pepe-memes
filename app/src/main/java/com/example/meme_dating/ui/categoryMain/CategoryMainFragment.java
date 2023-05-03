@@ -193,7 +193,7 @@ public class CategoryMainFragment extends Fragment {
                                                  super.onScrolled(recyclerView, dx, dy);
 
                                                  LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
+                                                 Log.e("load more", "here");
                                                  if (!isLoading) {
                                                      if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == memesArrayList.size() - 1) {
                                                          // bottom of list!
@@ -209,6 +209,7 @@ public class CategoryMainFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         memesArrayList.clear();
+        isLoading = false;
         binding = null;
     }
 }
