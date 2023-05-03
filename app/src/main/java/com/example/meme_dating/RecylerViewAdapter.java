@@ -67,6 +67,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView titleTextView;
         TextView authorTextView;
         TextView dateTextView;
+        TextView categoryText;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +75,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             titleTextView = itemView.findViewById(R.id.titleText);
             authorTextView = itemView.findViewById(R.id.authorLink);
             dateTextView= itemView.findViewById(R.id.dateTextView);
+            categoryText= itemView.findViewById(R.id.categoryText);
         }
     }
 
@@ -92,7 +94,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
         viewHolder.titleTextView.setText(mItemList.get(position).title);
-        viewHolder.authorTextView.setText("author "+mItemList.get(position).u_id);
+        viewHolder.authorTextView.setText(mItemList.get(position).u_name);
+        viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
         viewHolder.dateTextView.setText(DateFor.format(mItemList.get(position).uploadDate));
 
         String imageUri = mItemList.get(position).url;

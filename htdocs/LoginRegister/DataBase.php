@@ -91,7 +91,13 @@ class DataBase
         if($cat_id == 0)
         {
             $lastMemeId = $this->prepareData($lastMemeId);
-            $this->sql = "SELECT * FROM memes WHERE m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            FROM memes m
+            LEFT JOIN categories c
+            ON m.cat_id=c.cat_id
+            LEFT JOIN users u
+            ON m.u_id=u.u_id
+            WHERE m.m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
             $result = mysqli_query($this->connect, $this->sql);
             $row = mysqli_fetch_assoc($result);
             $myJSON = json_encode($row);
@@ -101,7 +107,12 @@ class DataBase
         {
             $cat_id = $this->prepareData($cat_id);
             $lastMemeId = $this->prepareData($lastMemeId);
-            $this->sql = "SELECT * FROM memes WHERE cat_id = '" . $cat_id . "' AND m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            FROM memes m
+            LEFT JOIN categories c
+            ON m.cat_id=c.cat_id
+            LEFT JOIN users u
+            ON m.u_id=u.u_id WHERE m.cat_id = '" . $cat_id . "' AND m.m_id < " . $lastMemeId . " ORDER BY m_id DESC LIMIT 1";
             $result = mysqli_query($this->connect, $this->sql);
             $row = mysqli_fetch_assoc($result);
             $myJSON = json_encode($row);
@@ -112,7 +123,13 @@ class DataBase
     {
         if($cat_id == 0)
         {
-            $this->sql = "SELECT * FROM memes ORDER BY m_id DESC LIMIT 1";
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            FROM memes m
+            LEFT JOIN categories c
+            ON m.cat_id=c.cat_id
+            LEFT JOIN users u
+            ON m.u_id=u.u_id
+            ORDER BY m_id DESC LIMIT 1";
             $result = mysqli_query($this->connect, $this->sql);
             $row = mysqli_fetch_assoc($result);
             $myJSON = json_encode($row);
@@ -121,7 +138,12 @@ class DataBase
         else
         {
             $cat_id = $this->prepareData($cat_id);
-            $this->sql = "SELECT * FROM memes WHERE cat_id = '" . $cat_id . "' ORDER BY m_id DESC LIMIT 1";
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            FROM memes m
+            LEFT JOIN categories c
+            ON m.cat_id=c.cat_id
+            LEFT JOIN users u
+            ON m.u_id=u.u_id WHERE m.cat_id = '" . $cat_id . "' ORDER BY m_id DESC LIMIT 1";
             $result = mysqli_query($this->connect, $this->sql);
             $row = mysqli_fetch_assoc($result);
             $myJSON = json_encode($row);
