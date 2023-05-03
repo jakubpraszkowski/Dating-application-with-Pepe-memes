@@ -121,7 +121,7 @@ class DataBase
         else
         {
             $cat_id = $this->prepareData($cat_id);
-            $this->sql = "SELECT * FROM memes ORDER BY m_id DESC LIMIT 1";
+            $this->sql = "SELECT * FROM memes WHERE cat_id = '" . $cat_id . "' ORDER BY m_id DESC LIMIT 1";
             $result = mysqli_query($this->connect, $this->sql);
             $row = mysqli_fetch_assoc($result);
             $myJSON = json_encode($row);
