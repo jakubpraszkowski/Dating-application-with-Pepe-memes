@@ -52,15 +52,13 @@ class DataBase
         return $login;
     }
 
-    function signUp($table, $fullname, $email, $username, $password)
+    function signUp($table, $username, $password)
     {
-        $fullname = $this->prepareData($fullname);
         $username = $this->prepareData($username);
         $password = $this->prepareData($password);
-        $email = $this->prepareData($email);
         $password = password_hash($password, PASSWORD_DEFAULT);
         $this->sql =
-            "INSERT INTO " . $table . " (fullname, username, password, email) VALUES ('" . $fullname . "','" . $username . "','" . $password . "','" . $email . "')";
+            "INSERT INTO " . $table . " (username, password) VALUES ('" . $username . "','" . $password . "')";
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
         } else return false;
@@ -91,7 +89,7 @@ class DataBase
         if($cat_id == 0)
         {
             $lastMemeId = $this->prepareData($lastMemeId);
-            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.username, add_date
             FROM memes m
             LEFT JOIN categories c
             ON m.cat_id=c.cat_id
@@ -107,7 +105,7 @@ class DataBase
         {
             $cat_id = $this->prepareData($cat_id);
             $lastMemeId = $this->prepareData($lastMemeId);
-            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.username, add_date
             FROM memes m
             LEFT JOIN categories c
             ON m.cat_id=c.cat_id
@@ -123,7 +121,7 @@ class DataBase
     {
         if($cat_id == 0)
         {
-            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.username, add_date
             FROM memes m
             LEFT JOIN categories c
             ON m.cat_id=c.cat_id
@@ -138,7 +136,7 @@ class DataBase
         else
         {
             $cat_id = $this->prepareData($cat_id);
-            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.name, add_date
+            $this->sql = "SELECT m.m_id, m.url, m.title, c.title AS cat_title, m.u_id, u.username, add_date
             FROM memes m
             LEFT JOIN categories c
             ON m.cat_id=c.cat_id

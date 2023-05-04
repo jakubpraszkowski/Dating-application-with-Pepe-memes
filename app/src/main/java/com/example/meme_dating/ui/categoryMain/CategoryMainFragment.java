@@ -86,7 +86,7 @@ public class CategoryMainFragment extends Fragment {
                                     obj.getString("title"),
                                     new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
                                     obj.getInt("u_id"),
-                                    obj.getString("name")
+                                    obj.getString("username")
                                 )
                             );
                             recylerViewAdapter.notifyDataSetChanged();
@@ -123,7 +123,7 @@ public class CategoryMainFragment extends Fragment {
                                             obj.getString("title"),
                                             new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
                                             obj.getInt("u_id"),
-                                            obj.getString("name")
+                                            obj.getString("username")
                                     )
                             );
                             recylerViewAdapter.notifyDataSetChanged();

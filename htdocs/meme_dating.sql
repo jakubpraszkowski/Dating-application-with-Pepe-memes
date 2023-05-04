@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 04 Maj 2023, 00:54
+-- Czas generowania: 04 Maj 2023, 12:45
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -95,23 +95,20 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `users` (
   `u_id` int(11) NOT NULL,
-  `name` varchar(40) COLLATE utf8_bin NOT NULL,
-  `lastname` varchar(40) COLLATE utf8_bin NOT NULL,
-  `login` varchar(40) COLLATE utf8_bin NOT NULL,
-  `pass` varchar(150) COLLATE utf8_bin NOT NULL,
-  `birthday` date NOT NULL
+  `username` varchar(40) COLLATE utf8_bin NOT NULL,
+  `password` varchar(150) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Zrzut danych tabeli `users`
 --
 
-INSERT INTO `users` (`u_id`, `name`, `lastname`, `login`, `pass`, `birthday`) VALUES
-(1, 'coolUser', 'idk', 'a', 'a', '2023-04-03'),
-(2, 'anotherUser', 'idk2', 'q', 'q', '2023-04-03'),
-(3, 'bestUser', 'r', 'r', 'r', '2023-05-17'),
-(4, 'anotherUser', 'idk2', 'q', 'q', '2023-04-03'),
-(5, 'bestUser', 'r', 'r', 'r', '2023-05-17');
+INSERT INTO `users` (`u_id`, `username`, `password`) VALUES
+(1, 'a', 'a'),
+(3, 'r', 'r'),
+(5, 'r', 'r'),
+(6, 'q', '$2y$10$apd/ZuH4VmtxE2V4KQie6eHP1rTCzUgrTpLoxuFXKoqCHI4z7JEYi'),
+(7, 'wwww', '$2y$10$FbY3P6CR8ynQgC3OVcun3ua59Sni3pujfn.NfzYmeSHeuHpmNGUn2');
 
 -- --------------------------------------------------------
 
@@ -192,7 +189,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `user_preferences`
