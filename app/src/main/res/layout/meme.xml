@@ -71,13 +71,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/logedUserID"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/likeButton"
-        style="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="@drawable/button_background_tint"
+        app:iconTint="@color/black"
+        android:textColor="@color/black"
         android:text="likes"
         app:icon="@drawable/baseline_arrow_upward_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,5 +102,9 @@
         android:text="dislikes"
         app:icon="@drawable/baseline_arrow_downward_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewMeme" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewMeme"
+        android:backgroundTint="@drawable/button_background_tint"
+        app:iconTint="@color/black"
+        android:textColor="@color/black"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

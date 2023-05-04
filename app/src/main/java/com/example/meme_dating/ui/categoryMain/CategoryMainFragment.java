@@ -116,7 +116,7 @@ public class CategoryMainFragment extends Fragment {
                             memesArrayList.get(memesArrayList.size()-1).reaction = obj.getInt("reaction");
                             recylerViewAdapter.notifyDataSetChanged();
                         } catch (Throwable t) {
-                            Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                            Log.e("new meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
                         }
                     }
                 }
