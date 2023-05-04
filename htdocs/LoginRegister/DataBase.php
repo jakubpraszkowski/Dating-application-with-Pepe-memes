@@ -148,6 +148,28 @@ class DataBase
             return $myJSON;
         }
     }
-}
+    function getMemeReactions($m_id, $u_id)
+    {
+        $m_id = $this->prepareData($m_id);
+        $this->sql = "SELECT COUNT(like_id) AS likes FROM meme_likes WHERE m_id = '" . $m_id . "' AND reaction = 1;";
+        $result = mysqli_query($this->connect, $this->sql);
+        $meme_likes = mysqli_fetch_assoc($result);
 
+        $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $m_id . "' AND reaction = 0;";
+        $result = mysqli_query($this->connect, $this->sql);
+        $meme_dislikes = mysqli_fetch_assoc($result);
+
+        $u_id = $this->prepareData($u_id);
+        $this->sql = "SELECT reaction FROM meme_likes WHERE u_id = '" . $u_id . "' AND m_id = '" . $m_id . "' ";
+        $result = mysqli_query($this->connect, $this->sql);
+        $user_reaction = mysqli_fetch_assoc($result);
+        if(is_null($user_reaction)){
+            $user_reaction = array("reaction" => "5");
+        }
+
+        $result = array_merge($meme_likes, $meme_dislikes, $user_reaction);
+        $myJSON = json_encode($result);
+        return $myJSON;
+    }
+}
 ?>

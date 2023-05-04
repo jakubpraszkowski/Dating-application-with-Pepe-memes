@@ -23,6 +23,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityCategoryMenuBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

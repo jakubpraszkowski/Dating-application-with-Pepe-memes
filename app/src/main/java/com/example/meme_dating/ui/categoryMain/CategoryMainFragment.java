@@ -31,6 +31,7 @@ public class CategoryMainFragment extends Fragment {
     public FragmentMemeScrollingBinding binding;
     public int cat_id;
     public int memesInThatCategory;
+    public int userID = 7;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cat_id = 0;
         Handler handler = new Handler();
@@ -50,7 +51,6 @@ public class CategoryMainFragment extends Fragment {
         });
 
         CategoryMainViewModel categoryMainViewModel = new ViewModelProvider(this).get(CategoryMainViewModel.class);
-
         binding = FragmentMemeScrollingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -86,14 +86,38 @@ public class CategoryMainFragment extends Fragment {
                                     obj.getString("title"),
                                     new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
                                     obj.getInt("u_id"),
-                                    obj.getString("username")
+                                    obj.getString("username"),
+                                        0,0,5
                                 )
                             );
-                            recylerViewAdapter.notifyDataSetChanged();
+                            //recylerViewAdapter.notifyDataSetChanged();
                         } catch (Throwable t) {
                             Log.e("new meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
                         }
 
+                    }
+                }
+            }
+        });
+        Handler handler2 = new Handler();
+        handler2.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field = {"m_id", "u_id"};
+                String[] data = {String.valueOf(memesArrayList.get(memesArrayList.size()-1).m_id), String.valueOf(userID)};
+                PutData putData = new PutData("http://10.0.2.2/getMemeReaction.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        try {
+                            JSONObject obj = new JSONObject(putData.getResult());
+                            Log.d("likes", obj.toString());
+                            memesArrayList.get(memesArrayList.size()-1).likes = obj.getInt("likes");
+                            memesArrayList.get(memesArrayList.size()-1).dislikes = obj.getInt("dislikes");
+                            memesArrayList.get(memesArrayList.size()-1).reaction = obj.getInt("reaction");
+                            recylerViewAdapter.notifyDataSetChanged();
+                        } catch (Throwable t) {
+                            Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                        }
                     }
                 }
             }
@@ -112,20 +136,31 @@ public class CategoryMainFragment extends Fragment {
                     if (putData.onComplete()) {
                         try {
                             JSONObject obj = new JSONObject(putData.getResult());
-
                             Log.d("first meme", obj.toString());
-
-                            memesArrayList.add(
-                                    new Meme(
-                                            obj.getInt("m_id"),
-                                            obj.getString("url"),
-                                            obj.getString("cat_title"),
-                                            obj.getString("title"),
-                                            new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
-                                            obj.getInt("u_id"),
-                                            obj.getString("username")
-                                    )
-                            );
+                            memesArrayList.add(new Meme(obj.getInt("m_id"), obj.getString("url"), obj.getString("cat_title"), obj.getString("title"), new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ), obj.getInt("u_id"), obj.getString("username"), 0,0,3));
+                            //recylerViewAdapter.notifyDataSetChanged();
+                        } catch (Throwable t) {
+                            Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
+                        }
+                    }
+                }
+            }
+        });
+        Handler handler2 = new Handler();
+        handler2.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field = {"m_id", "u_id"};
+                String[] data = {String.valueOf(memesArrayList.get(0).m_id), String.valueOf(userID)};
+                PutData putData = new PutData("http://10.0.2.2/getMemeReaction.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        try {
+                            JSONObject obj = new JSONObject(putData.getResult());
+                            Log.d("likes", obj.toString());
+                            memesArrayList.get(memesArrayList.size()-1).likes = obj.getInt("likes");
+                            memesArrayList.get(memesArrayList.size()-1).dislikes = obj.getInt("dislikes");
+                            memesArrayList.get(memesArrayList.size()-1).reaction = obj.getInt("reaction");
                             recylerViewAdapter.notifyDataSetChanged();
                         } catch (Throwable t) {
                             Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
@@ -193,7 +228,7 @@ public class CategoryMainFragment extends Fragment {
                                                  super.onScrolled(recyclerView, dx, dy);
 
                                                  LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                                                 Log.e("load more", "here");
+
                                                  if (!isLoading) {
                                                      if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == memesArrayList.size() - 1) {
                                                          // bottom of list!

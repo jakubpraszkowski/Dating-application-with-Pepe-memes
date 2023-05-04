@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 04 Maj 2023, 12:45
+-- Czas generowania: 04 Maj 2023, 14:12
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -76,6 +76,28 @@ INSERT INTO `memes` (`m_id`, `url`, `title`, `cat_id`, `u_id`, `add_date`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `meme_likes`
+--
+
+CREATE TABLE `meme_likes` (
+  `like_id` int(11) NOT NULL,
+  `m_id` int(11) NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `reaction` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `meme_likes`
+--
+
+INSERT INTO `meme_likes` (`like_id`, `m_id`, `u_id`, `reaction`) VALUES
+(1, 12, 6, 1),
+(2, 12, 7, 1),
+(3, 11, 1, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `messages`
 --
 
@@ -142,6 +164,14 @@ ALTER TABLE `memes`
   ADD KEY `u_id` (`u_id`);
 
 --
+-- Indeksy dla tabeli `meme_likes`
+--
+ALTER TABLE `meme_likes`
+  ADD PRIMARY KEY (`like_id`),
+  ADD KEY `m_id` (`m_id`),
+  ADD KEY `u_id` (`u_id`);
+
+--
 -- Indeksy dla tabeli `messages`
 --
 ALTER TABLE `messages`
@@ -180,6 +210,12 @@ ALTER TABLE `memes`
   MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT dla tabeli `meme_likes`
+--
+ALTER TABLE `meme_likes`
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT dla tabeli `messages`
 --
 ALTER TABLE `messages`
@@ -206,6 +242,12 @@ ALTER TABLE `user_preferences`
 --
 ALTER TABLE `memes`
   ADD CONSTRAINT `cat_id` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`cat_id`);
+
+--
+-- Ograniczenia dla tabeli `meme_likes`
+--
+ALTER TABLE `meme_likes`
+  ADD CONSTRAINT `meme_likes_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`u_id`);
 
 --
 -- Ograniczenia dla tabeli `messages`

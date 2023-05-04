@@ -3,6 +3,7 @@ package com.example.meme_dating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -66,15 +67,18 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMeme;
         TextView titleTextView, authorTextView, dateTextView, categoryText, textID;
+        Button likes, dislikes;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewMeme = itemView.findViewById(R.id.imageViewMeme);
             titleTextView = itemView.findViewById(R.id.titleText);
             authorTextView = itemView.findViewById(R.id.authorLink);
-            dateTextView= itemView.findViewById(R.id.dateTextView);
-            categoryText= itemView.findViewById(R.id.categoryText);
-            textID= itemView.findViewById(R.id.textID);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
+            categoryText = itemView.findViewById(R.id.categoryText);
+            textID = itemView.findViewById(R.id.textID);
+            likes = itemView.findViewById(R.id.likeButton);
+            dislikes = itemView.findViewById(R.id.dislikeButton);
         }
     }
 
@@ -97,6 +101,18 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
         viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
         viewHolder.dateTextView.setText(DateFor.format(mItemList.get(position).uploadDate));
+
+        viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+        viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+
+        if(mItemList.get(position).reaction == 1){//like
+            viewHolder.likes.setEnabled(false);
+        }else if(mItemList.get(position).reaction == 1){//dislike
+            viewHolder.dislikes.setEnabled(false);
+        }else{//no reaction
+            viewHolder.likes.setEnabled(true);
+            viewHolder.dislikes.setEnabled(true);
+        }
 
         String imageUri = mItemList.get(position).url;
 
