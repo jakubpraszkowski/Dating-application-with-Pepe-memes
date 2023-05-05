@@ -11,8 +11,6 @@ class DataBase
     protected $password;
 	protected $password2;
     protected $databasename;
-	protected $errorLogin;
-	protected $errorPassword;
 
     public function __construct()
     {
@@ -60,7 +58,7 @@ class DataBase
         $username = $this->prepareData($username);
         $password = $this->prepareData($password);
         $password2 = password_hash($password, PASSWORD_DEFAULT);
-		$this->sql1 = "SELECT * FROM `users` WHERE `username` = '" . $username . "'";
+		$this->sql1 = "SELECT * FROM " . $table . " WHERE `username` = '" . $username . "'";
 		$result = mysqli_query($this->connect, $this->sql1); 
 		if (mysqli_num_rows($result) > 0) {
 			return false;
@@ -76,7 +74,6 @@ class DataBase
 	private function verifyLogin($username){
         $regex  = '/^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9]*$/';
         if(preg_match($regex, $username) && strlen($username)>=5 && strlen($username)<=25){
-			$errorLogin="";
             return true;
         }
         else return false;
@@ -175,6 +172,16 @@ class DataBase
             $myJSON = json_encode($row);
             return $myJSON;
         }
+    }
+	function getUserID($username)
+    {
+		$this->sql = "SELECT u_id
+		FROM users 
+		WHERE username = '" . $username"'";
+		$result = mysqli_query($this->connect, $this->sql);
+		$row = mysqli_fetch_assoc($result);
+		$userID = json_encode($row);
+		return $userID;
     }
 }
 
