@@ -4,8 +4,8 @@ $db = new DataBase();
 if (isset($_POST['username']) && isset($_POST['password'])) {
     if ($db->dbConnect()) {
         if ($db->logIn("users", $_POST['username'], $_POST['password'])) {
-            echo "Login Success";
-        } else echo "Username or Password wrong";
-    } else echo "Error: Database connection";
-} else echo "All fields are required";
+            echo "Zalogowano";
+        } else echo "Błędny login lub hasło";
+    } else echo "Błąd połączenia z bazą danych";
+} else echo "Wszystkie pola są wymagane!";
 ?>

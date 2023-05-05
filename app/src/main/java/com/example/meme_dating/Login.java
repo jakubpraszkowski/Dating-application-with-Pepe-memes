@@ -3,6 +3,7 @@ package com.example.meme_dating;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -19,6 +20,7 @@ public class Login extends AppCompatActivity {
     TextInputEditText textInputEditTextUsername, textInputEditTextPassword;
     Button buttonLogin;
     TextView textViewSignUp;
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,11 @@ public class Login extends AppCompatActivity {
         buttonLogin = findViewById(R.id.btnLogin);
         textViewSignUp = findViewById(R.id.signUpText);
 
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+
+        if(sp.getBoolean("logged",false)){
+            goToMainActivity();
+        }
         textViewSignUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -60,10 +67,11 @@ public class Login extends AppCompatActivity {
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     String result = putData.getResult();
-                                    if(result.equals("Login Success")){
+                                    if(result.equals("Zalogowano")){
                                         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(), CategoryMenuActivity.class);
                                         startActivity(intent);
+                                        sp.edit().putBoolean("logged",true).apply();
                                         finish();
                                     }
                                     else{
@@ -75,9 +83,13 @@ public class Login extends AppCompatActivity {
                     });
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Wszystkie pola są wymagane!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    private void goToMainActivity() {
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
     }
 }

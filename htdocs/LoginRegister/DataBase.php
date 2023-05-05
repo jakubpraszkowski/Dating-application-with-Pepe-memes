@@ -9,7 +9,10 @@ class DataBase
     protected $servername;
     protected $username;
     protected $password;
+	protected $password2;
     protected $databasename;
+	protected $errorLogin;
+	protected $errorPassword;
 
     public function __construct()
     {
@@ -56,12 +59,37 @@ class DataBase
     {
         $username = $this->prepareData($username);
         $password = $this->prepareData($password);
-        $password = password_hash($password, PASSWORD_DEFAULT);
-        $this->sql =
-            "INSERT INTO " . $table . " (username, password) VALUES ('" . $username . "','" . $password . "')";
-        if (mysqli_query($this->connect, $this->sql)) {
+        $password2 = password_hash($password, PASSWORD_DEFAULT);
+		$this->sql1 = "SELECT * FROM `users` WHERE `username` = '" . $username . "'";
+		$result = mysqli_query($this->connect, $this->sql1); 
+		if (mysqli_num_rows($result) > 0) {
+			return false;
+		}
+		if ((($this->verifyLogin($username))==true) && ($this->verifyPassword($password))==true){			
+			$this->sql2 = "INSERT INTO " . $table . " (username, password) VALUES ('" . $username . "','" . $password2 . "')";
+			if (mysqli_query($this->connect, $this->sql2)) {
+				return true;
+			} else return false;
+		}else return false;
+    }
+	
+	private function verifyLogin($username){
+        $regex  = '/^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ0-9]*$/';
+        if(preg_match($regex, $username) && strlen($username)>=5 && strlen($username)<=25){
+			$errorLogin="";
             return true;
-        } else return false;
+        }
+        else return false;
+    }
+	
+	private function verifyPassword($password){
+        if(strlen($password) < 8){
+            return false;
+        }
+        if(strlen($password) > 25){
+            return false;
+        }
+        return true;
     }
 
     function checkMemesInCategory($cat_id)
@@ -148,28 +176,6 @@ class DataBase
             return $myJSON;
         }
     }
-    function getMemeReactions($m_id, $u_id)
-    {
-        $m_id = $this->prepareData($m_id);
-        $this->sql = "SELECT COUNT(like_id) AS likes FROM meme_likes WHERE m_id = '" . $m_id . "' AND reaction = 1;";
-        $result = mysqli_query($this->connect, $this->sql);
-        $meme_likes = mysqli_fetch_assoc($result);
-
-        $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $m_id . "' AND reaction = 0;";
-        $result = mysqli_query($this->connect, $this->sql);
-        $meme_dislikes = mysqli_fetch_assoc($result);
-
-        $u_id = $this->prepareData($u_id);
-        $this->sql = "SELECT reaction FROM meme_likes WHERE u_id = '" . $u_id . "' AND m_id = '" . $m_id . "' ";
-        $result = mysqli_query($this->connect, $this->sql);
-        $user_reaction = mysqli_fetch_assoc($result);
-        if(is_null($user_reaction)){
-            $user_reaction = array("reaction" => "5");
-        }
-
-        $result = array_merge($meme_likes, $meme_dislikes, $user_reaction);
-        $myJSON = json_encode($result);
-        return $myJSON;
-    }
 }
+
 ?>
