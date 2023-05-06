@@ -1,7 +1,7 @@
 <?php
 require "LoginRegister/DataBase.php";
 $db = new DataBase();
-if (isset($_POST['u_id'])) 
+if (isset($_POST['username'])) 
 {
     if ($db->dbConnect()) {
          

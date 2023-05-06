@@ -39,7 +39,7 @@ class DataBase
     {
         $username = $this->prepareData($username);
         $password = $this->prepareData($password);
-        $this->sql = "select * from " . $table . " where username = '" . $username . "'";
+        $this->sql = "select * from users where username = '" . $username . "'";
         $result = mysqli_query($this->connect, $this->sql);
         $row = mysqli_fetch_assoc($result);
         if (mysqli_num_rows($result) != 0) {
@@ -58,7 +58,7 @@ class DataBase
         $username = $this->prepareData($username);
         $password = $this->prepareData($password);
         $password2 = password_hash($password, PASSWORD_DEFAULT);
-		$this->sql1 = "SELECT * FROM " . $table . " WHERE `username` = '" . $username . "'";
+		$this->sql1 = "SELECT * FROM users WHERE `username` = '" . $username . "'";
 		$result = mysqli_query($this->connect, $this->sql1); 
 		if (mysqli_num_rows($result) > 0) {
 			return false;
@@ -172,6 +172,7 @@ class DataBase
             $myJSON = json_encode($row);
             return $myJSON;
         }
+	}
 	function getMemeReactions($m_id, $u_id)
     {
         $m_id = $this->prepareData($m_id);
@@ -195,12 +196,11 @@ class DataBase
         $myJSON = json_encode($result);
         return $myJSON;
     }
-    }
 	function getUserID($username)
     {
 		$this->sql = "SELECT u_id
 		FROM users 
-		WHERE username = '" . $username"'";
+		WHERE username = '" . $username . "'";
 		$result = mysqli_query($this->connect, $this->sql);
 		$row = mysqli_fetch_assoc($result);
 		$userID = json_encode($row);

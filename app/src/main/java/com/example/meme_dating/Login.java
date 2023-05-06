@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
         buttonLogin = findViewById(R.id.btnLogin);
         textViewSignUp = findViewById(R.id.signUpText);
 
-        if(SharedPreferencesManager.getInstance(getApplicationContext()).getStatus()==false){
+        if(SharedPreferencesManager.getInstance(getApplicationContext()).getStatus()==true){
             goToMainActivity();
         }
         textViewSignUp.setOnClickListener(v -> {
@@ -60,11 +60,11 @@ public class Login extends AppCompatActivity {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
                             if(result.equals("Zalogowano")){
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setStatus(true);
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setUsername(data[0]);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), CategoryMenuActivity.class);
                                 startActivity(intent);
-                                SharedPreferencesManager.getInstance(getApplicationContext()).setStatus(true);
-                                SharedPreferencesManager.getInstance(getApplicationContext()).setUsername(data[0]);
                                 finish();
                             }
                             else{
