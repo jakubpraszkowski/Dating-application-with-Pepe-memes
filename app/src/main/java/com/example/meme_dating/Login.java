@@ -80,7 +80,7 @@ public class Login extends AppCompatActivity {
         });
     }
     private void goToMainActivity() {
-        Intent i = new Intent(this,MainActivity.class);
+        Intent i = new Intent(this,CategoryMenuActivity.class);
         startActivity(i);
     }
 }
