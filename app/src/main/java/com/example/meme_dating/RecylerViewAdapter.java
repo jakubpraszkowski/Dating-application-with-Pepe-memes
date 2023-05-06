@@ -2,6 +2,7 @@ package com.example.meme_dating;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.squareup.picasso.Picasso;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
@@ -103,8 +106,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
+        viewHolder.logedUserID.setText(String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()));
         viewHolder.textID.setText(String.valueOf(mItemList.get(position).u_id));
-        viewHolder.logedUserID.setText(String.valueOf(7));
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
         viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
@@ -132,7 +135,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onClick(View view) {
                 if(mItemList.get(position).reaction == 1){ //remove like
-                    Toast.makeText(view.getContext(), " remove like", Toast.LENGTH_SHORT).show();
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -147,6 +149,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.dislikes.setEnabled(true);
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
                                     }
                                 }
@@ -154,7 +157,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     });
                 }else { //add like
-                    Toast.makeText(view.getContext(), "like", Toast.LENGTH_SHORT).show();
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -169,6 +171,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         mItemList.get(position).reaction = 1;
                                         viewHolder.dislikes.setEnabled(false);
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
 
                                     }
@@ -184,7 +187,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void onClick(View view) {
                 if(mItemList.get(position).reaction == 0){ //remove dislike
-                    Toast.makeText(view.getContext(), " remove dislike", Toast.LENGTH_SHORT).show();
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -199,6 +201,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.likes.setEnabled(true);
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
                                     }
                                 }
@@ -206,7 +209,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     });
                 }else { //dislike
-                    Toast.makeText(view.getContext(), "dislike", Toast.LENGTH_SHORT).show();
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -221,6 +223,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         mItemList.get(position).reaction = 0;
                                         viewHolder.likes.setEnabled(false);
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
                                     }
                                 }

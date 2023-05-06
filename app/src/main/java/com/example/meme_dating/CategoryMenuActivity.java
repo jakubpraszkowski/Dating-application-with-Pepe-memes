@@ -1,11 +1,14 @@
 package com.example.meme_dating;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meme_dating.databinding.ActivityCategoryMenuBinding;
+import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 public class CategoryMenuActivity extends AppCompatActivity {
 
@@ -49,6 +53,21 @@ public class CategoryMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_category_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                String[] field =  {"username"};
+                String[] data = {String.valueOf(SharedPreferencesManager.getInstance(getApplicationContext()).getUsername())};
+                PutData putData = new PutData("https://meme-dating.one.pl/getUserID.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        SharedPreferencesManager.getInstance(getApplicationContext()).setUserID(Integer.parseInt(putData.getResult())) ;
+                    }
+                }
+            }
+        });
     }
 
     @Override

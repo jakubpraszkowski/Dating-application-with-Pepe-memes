@@ -7,6 +7,7 @@ public class SharedPreferencesManager {
     private static final String APP_PREFS = "AppPrefsFile";
     private static final Boolean logged = false;
     private static final String username = "";
+    private static final int userID = 0;
 
     private SharedPreferences sp;
     private static SharedPreferencesManager instance;
@@ -26,12 +27,19 @@ public class SharedPreferencesManager {
         editor.putString("username", username);
         editor.apply();
     }
-
+    public void setUserID(int id) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("userID", id);
+        editor.apply();
+    }
     public String getUsername() {
         String usernameValue = sp.getString("username", null);
         return usernameValue;
     }
-
+    public int getUserID() {
+        int userIDValue = sp.getInt("userID", 0);
+        return userIDValue;
+    }
     public void setStatus(Boolean logged) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("logged", logged);

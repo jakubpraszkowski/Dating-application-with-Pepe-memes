@@ -17,6 +17,7 @@ import com.example.meme_dating.Meme;
 import com.example.meme_dating.R;
 import com.example.meme_dating.RecylerViewAdapter;
 import com.example.meme_dating.databinding.FragmentMemeScrollingBinding;
+import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONObject;
@@ -31,7 +32,6 @@ public class CategoryMainFragment extends Fragment {
     public FragmentMemeScrollingBinding binding;
     public int cat_id;
     public int memesInThatCategory;
-    public int userID = 7;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cat_id = 0;
         Handler handler = new Handler();
@@ -104,7 +104,7 @@ public class CategoryMainFragment extends Fragment {
             @Override
             public void run() {
                 String[] field = {"m_id", "u_id"};
-                String[] data = {String.valueOf(memesArrayList.get(memesArrayList.size()-1).m_id), String.valueOf(userID)};
+                String[] data = {String.valueOf(memesArrayList.get(memesArrayList.size()-1).m_id), String.valueOf(SharedPreferencesManager.getInstance(getContext()).getUserID())};
                 PutData putData = new PutData("https://meme-dating.one.pl/getMemeReaction.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
@@ -151,7 +151,7 @@ public class CategoryMainFragment extends Fragment {
             @Override
             public void run() {
                 String[] field = {"m_id", "u_id"};
-                String[] data = {String.valueOf(memesArrayList.get(0).m_id), String.valueOf(userID)};
+                String[] data = {String.valueOf(memesArrayList.get(0).m_id), String.valueOf(SharedPreferencesManager.getInstance(getContext()).getUserID())};
                 PutData putData = new PutData("https://meme-dating.one.pl/getMemeReaction.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
