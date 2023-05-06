@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity {
                             String[] data = new String[2];
                             data[0] = username;
                             data[1] = password;
-                            PutData putData = new PutData("http://10.0.2.2/LoginRegister/signup.php", "POST", field, data);
+                            PutData putData = new PutData("https://meme-dating.one.pl/LoginRegister/signup.php", "POST", field, data);
                             if(putData == null){
                                 Toast.makeText(getApplicationContext(), "Wrong IP Address", Toast.LENGTH_SHORT).show();
                             }

@@ -40,7 +40,7 @@ public class CategoryMainFragment extends Fragment {
             public void run() {
                 String[] field =  {"cat_id"};
                 String[] data = {String.valueOf(cat_id)};
-                PutData putData = new PutData("http://10.0.2.2/memesInCategoryCheck.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/memesInCategoryCheck.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         Log.d("meme", "memes in that category: "+putData.getResult());
@@ -70,7 +70,7 @@ public class CategoryMainFragment extends Fragment {
             public void run() {
                 String[] field = {"cat_id", "lastMemeId"};
                 String[] data = {String.valueOf(cat_id), memesArrayList.get(memesArrayList.size()-1).m_idTostring()};
-                PutData putData = new PutData("http://10.0.2.2/getNewMeme.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/getNewMeme.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         try {
@@ -105,7 +105,7 @@ public class CategoryMainFragment extends Fragment {
             public void run() {
                 String[] field = {"m_id", "u_id"};
                 String[] data = {String.valueOf(memesArrayList.get(memesArrayList.size()-1).m_id), String.valueOf(userID)};
-                PutData putData = new PutData("http://10.0.2.2/getMemeReaction.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/getMemeReaction.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         try {
@@ -131,7 +131,7 @@ public class CategoryMainFragment extends Fragment {
             public void run() {
                 String[] field = {"cat_id"};
                 String[] data = {String.valueOf(cat_id)};
-                PutData putData = new PutData("http://10.0.2.2/getLatestMeme.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/getLatestMeme.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         try {
@@ -152,7 +152,7 @@ public class CategoryMainFragment extends Fragment {
             public void run() {
                 String[] field = {"m_id", "u_id"};
                 String[] data = {String.valueOf(memesArrayList.get(0).m_id), String.valueOf(userID)};
-                PutData putData = new PutData("http://10.0.2.2/getMemeReaction.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/getMemeReaction.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         try {

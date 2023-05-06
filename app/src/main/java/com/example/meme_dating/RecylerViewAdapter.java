@@ -139,7 +139,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         public void run() {
                             String[] field = {"m_id", "u_id"};
                             String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(viewHolder.logedUserID.getText())};
-                            PutData putData = new PutData("http://10.0.2.2/removeReaction.php", "POST", field, data);
+                            PutData putData = new PutData("https://meme-dating.one.pl/removeReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
@@ -161,7 +161,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         public void run() {
                             String[] field = {"m_id", "u_id", "reaction"};
                             String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(viewHolder.logedUserID.getText()), "1"};
-                            PutData putData = new PutData("http://10.0.2.2/addReaction.php", "POST", field, data);
+                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
@@ -191,7 +191,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         public void run() {
                             String[] field = {"m_id", "u_id"};
                             String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(viewHolder.logedUserID.getText())};
-                            PutData putData = new PutData("http://10.0.2.2/removeReaction.php", "POST", field, data);
+                            PutData putData = new PutData("https://meme-dating.one.pl/removeReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
@@ -213,7 +213,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         public void run() {
                             String[] field = {"m_id", "u_id", "reaction"};
                             String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(viewHolder.logedUserID.getText()), "0"};
-                            PutData putData = new PutData("http://10.0.2.2/addReaction.php", "POST", field, data);
+                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {

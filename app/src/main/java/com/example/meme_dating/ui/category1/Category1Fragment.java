@@ -28,7 +28,7 @@ public class Category1Fragment extends CategoryMainFragment {
             public void run() {
                 String[] field =  {"cat_id"};
                 String[] data = {String.valueOf(cat_id)};
-                PutData putData = new PutData("http://10.0.2.2/memesInCategoryCheck.php", "POST", field, data);
+                PutData putData = new PutData("https://meme-dating.one.pl/memesInCategoryCheck.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         Log.d("meme", "memes in that category: "+putData.getResult());
