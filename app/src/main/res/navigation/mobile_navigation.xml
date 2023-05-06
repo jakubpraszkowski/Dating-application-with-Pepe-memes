@@ -16,6 +16,25 @@
         android:name="com.example.meme_dating.ui.category1.Category1Fragment"
         android:label="@string/menu_category1"
         tools:layout="@layout/fragment_meme_scrolling" />
-
+    <fragment
+        android:id="@+id/nav_category2"
+        android:name="com.example.meme_dating.ui.category2.Category2Fragment"
+        android:label="@string/menu_category2"
+        tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category3"
+        android:name="com.example.meme_dating.ui.category3.Category3Fragment"
+        android:label="@string/menu_category3"
+        tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category4"
+        android:name="com.example.meme_dating.ui.category4.Category4Fragment"
+        android:label="@string/menu_category4"
+        tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category5"
+        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:label="@string/menu_category5"
+        tools:layout="@layout/fragment_meme_scrolling" />
 
 </navigation>

@@ -12,5 +12,21 @@
             android:id="@+id/nav_category1"
             android:icon="@drawable/baseline_computer_24"
             android:title="@string/menu_category1" />
+        <item
+            android:id="@+id/nav_category2"
+            android:icon="@drawable/baseline_menu_book_24"
+            android:title="@string/menu_category2" />
+        <item
+            android:id="@+id/nav_category3"
+            android:icon="@drawable/baseline_fingerprint_24"
+            android:title="@string/menu_category3" />
+        <item
+            android:id="@+id/nav_category4"
+            android:icon="@drawable/baseline_church_24"
+            android:title="@string/menu_category4" />
+        <item
+            android:id="@+id/nav_category5"
+            android:icon="@drawable/baseline_tsunami_24"
+            android:title="@string/menu_category5" />
     </group>
 </menu>

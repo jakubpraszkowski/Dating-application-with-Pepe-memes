@@ -14,5 +14,8 @@
 
     <string name="menu_main">Main</string>
     <string name="menu_category1">IT</string>
-    <string name="menu_category2">category2</string>
+    <string name="menu_category2">Political</string>
+    <string name="menu_category3">Anime</string>
+    <string name="menu_category4">Religion</string>
+    <string name="menu_category5">Dark Humor</string>
 </resources>
