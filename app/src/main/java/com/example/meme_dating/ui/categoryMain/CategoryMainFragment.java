@@ -180,7 +180,7 @@ public class CategoryMainFragment extends Fragment {
         });
     }
     public void initAdapter() {
-        recylerViewAdapter = new RecylerViewAdapter(memesArrayList);
+        recylerViewAdapter = new RecylerViewAdapter(memesArrayList, getActivity());
         recyclerView.setAdapter(recylerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
