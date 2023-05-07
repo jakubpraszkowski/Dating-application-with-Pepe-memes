@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDF4FF"
     tools:context=".ChatActivity">
-
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarchat"
@@ -18,35 +18,34 @@
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="50dp"
-            app:background="@android:color/transparent"
-            app:tint="@color/white"
             android:layout_height="50dp"
-            android:src="@drawable/baseline_arrow_back_24"
             android:background="@android:color/transparent"
-            android:contentDescription="Cofnij"
-            android:padding="8dp" />
+            android:contentDescription="back_button_description"
+            android:padding="8dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/nameofuser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nazwa użytkownika"
+            android:text="Username"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-
-
     </androidx.appcompat.widget.Toolbar>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarchat"
+        android:layout_height="0dp"
+        android:layout_below="@id/toolbarchat"
         android:layout_above="@id/getmessage"
-        android:padding="5dp" />
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:layout_weight="1" />
 
     <EditText
         android:id="@+id/getmessage"
@@ -56,12 +55,12 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="55dp"
         android:layout_marginBottom="5dp"
+        android:background="@drawable/message"
         android:hint="Napisz wiadomość"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
-        android:textColor="@color/black"
         android:textAlignment="textStart"
-        android:background="@drawable/message"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <androidx.cardview.widget.CardView
@@ -74,18 +73,21 @@
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="45dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:tint="@color/white"
-            android:backgroundTint="?attr/colorPrimary"
-            android:background="?attr/colorPrimary"
+        <ImageButton
             android:id="@+id/imagesendmessage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:background="?attr/colorPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="send_message_description"
             android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_arrow_forward_24"
+            app:tint="@color/white" />
 
-            android:src="@drawable/baseline_arrow_forward_24" />
+
+
 
     </androidx.cardview.widget.CardView>
 
