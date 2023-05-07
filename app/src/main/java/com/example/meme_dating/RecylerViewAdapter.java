@@ -29,15 +29,12 @@ import java.text.SimpleDateFormat;
 public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
     private List<Meme> mItemList;
     private Context context;
     public RecylerViewAdapter(List<Meme> itemList) {
         mItemList = itemList;
     }
 
-    // Based on the View type we are instantiating the
-    // ViewHolder in the onCreateViewHolder() method
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,9 +48,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    // Inside the onBindViewHolder() method we
-    // are checking the type of ViewHolder
-    // instance and populating the row accordingly
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
@@ -72,6 +66,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     // getItemViewType() method is the method where we check each element
     // of the list. If the element is NULL we set the view type as 1 else 0
     public int getItemViewType(int position) {
+        int VIEW_TYPE_LOADING = 1;
         return mItemList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
@@ -93,16 +88,13 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             logedUserID = itemView.findViewById(R.id.logedUserID);
         }
     }
-
     private class LoadingviewHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
-
         public LoadingviewHolder(@NonNull View itemView) {
             super(itemView);
             progressBar = itemView.findViewById(R.id.progressbar);
         }
     }
-
     private void showLoadingView(LoadingviewHolder viewHolder, int position) {
         // Progressbar would be displayed
     }
@@ -132,9 +124,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             viewHolder.likes.setEnabled(false);
         }
         String imageUri = mItemList.get(position).url;
-
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
-
         viewHolder.authorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -163,8 +163,6 @@ public class CategoryMainFragment extends Fragment {
         newMemes(4);
         isLoading = false;
     }
-    // LoadMore() method is used to implement
-    // the functionality of load more
     public void loadMore() {
 
         if(memesArrayList.size()>=memesInThatCategory){return;}
@@ -181,15 +179,11 @@ public class CategoryMainFragment extends Fragment {
             }
         }, 1000);
     }
-    // initAdapter() method initiates the RecyclerViewAdapter
     public void initAdapter() {
         recylerViewAdapter = new RecylerViewAdapter(memesArrayList);
         recyclerView.setAdapter(recylerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
-    // initScrollListener() method is the method where we are checking
-    // the scrolled state of the RecyclerView and if bottom-most is visible
-    // we are showing the loading view and populating the next list
     public void initScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
              @Override

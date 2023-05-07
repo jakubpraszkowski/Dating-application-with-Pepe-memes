@@ -27,9 +27,4 @@ public class Meme {
         this.dislikes = dislikes;
         this.reaction = reaction;
     }
-    @Override
-    public String toString() {
-        return title;
-    }
-    public String m_idTostring(){ return String.valueOf(m_id); }
 }

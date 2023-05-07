@@ -25,14 +25,11 @@ import com.vishnusivadas.advanced_httpurlconnection.PutData;
 public class CategoryMenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityCategoryMenuBinding binding;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityCategoryMenuBinding.inflate(getLayoutInflater());
+        com.example.meme_dating.databinding.ActivityCategoryMenuBinding binding = ActivityCategoryMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarCategoryMenu.toolbar);
@@ -78,14 +75,11 @@ public class CategoryMenuActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_my_profile:
-                Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_my_profile) {
+            Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
+            return true;
         }
-
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
