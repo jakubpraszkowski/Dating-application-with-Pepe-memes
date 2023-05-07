@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -114,7 +116,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
         viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
-        viewHolder.dateTextView.setText(hoursDifference(LocalDateTime.now(), mItemList.get(position).uploadDate));
+        viewHolder.dateTextView.setText(hoursDifference(LocalDateTime.now(ZoneId.of("UTC+2")), mItemList.get(position).uploadDate));
         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
 
