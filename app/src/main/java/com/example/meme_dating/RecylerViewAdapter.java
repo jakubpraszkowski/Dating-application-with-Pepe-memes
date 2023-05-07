@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
 import java.util.List;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
@@ -28,7 +29,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private List<Meme> mItemList;
-    SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
     private Context context;
     public RecylerViewAdapter(List<Meme> itemList) {
         mItemList = itemList;
@@ -104,15 +104,24 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void showLoadingView(LoadingviewHolder viewHolder, int position) {
         // Progressbar would be displayed
     }
-
+    private static String hoursDifference(Date date1, Date date2) {
+        final int MILLI_TO_MIN = 1000 * 60;
+        int diffInMin = (int) (date1.getTime() - date2.getTime()) / MILLI_TO_MIN;
+        if(diffInMin < 60 ){
+            return diffInMin+"min";
+        }else if((diffInMin/60) < 24){
+            return diffInMin/60+"h";
+        }else {
+            return diffInMin/(60*24)+"d";
+        }
+    }
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
         viewHolder.logedUserID.setText(String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()));
         viewHolder.textID.setText(String.valueOf(mItemList.get(position).u_id));
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
         viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
-        viewHolder.dateTextView.setText(DateFor.format(mItemList.get(position).uploadDate));
-
+        viewHolder.dateTextView.setText(hoursDifference(new Date(), mItemList.get(position).uploadDate));
         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
 
