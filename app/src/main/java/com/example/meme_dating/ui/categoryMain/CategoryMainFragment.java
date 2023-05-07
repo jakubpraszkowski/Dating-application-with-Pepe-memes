@@ -92,9 +92,7 @@ public class CategoryMainFragment extends Fragment {
                             Log.d("newMemes", putData.getResult());
                             JSONArray jsonarray = new JSONArray(putData.getResult());
                             for (int i = 0; i < jsonarray.length(); i++) {
-
                                 if(memesArrayList.size()>=memesInThatCategory){return;}
-
                                 JSONObject obj = jsonarray.getJSONObject(i);
                                 Log.d("newMemes", obj.toString());
 
@@ -111,7 +109,6 @@ public class CategoryMainFragment extends Fragment {
                                     obj.getInt("reaction")));
                                 latestMemeId = obj.getInt("m_id");
                                 recylerViewAdapter.notifyItemInserted(memesArrayList.size() - 1);
-                                Log.d("newMemes", "added meme, size: "+String.valueOf(memesArrayList.size())+", memesInThatCategory - 1: "+String.valueOf(memesInThatCategory));
                             }
                         } catch (Throwable t) {
                             Log.e("newMemes", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
@@ -129,39 +126,26 @@ public class CategoryMainFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                String[] field = {"cat_id"};
-                String[] data = {String.valueOf(cat_id)};
+                String[] field = {"cat_id", "u_id"};
+                String[] data = {String.valueOf(cat_id), String.valueOf(SharedPreferencesManager.getInstance(getContext()).getUserID())};
                 PutData putData = new PutData("https://meme-dating.one.pl/getLatestMeme.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         try {
                             JSONObject obj = new JSONObject(putData.getResult());
                             Log.d("first meme", putData.getData());
-                            Log.d("first meme", "added meme, size: "+String.valueOf(memesArrayList.size()));
-                            meme[0] = new Meme(obj.getInt("m_id"), obj.getString("url"), obj.getString("cat_title"), obj.getString("title"), new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ), obj.getInt("u_id"), obj.getString("username"), 0,0,3);
+                            meme[0] = new Meme(
+                                    obj.getInt("m_id"),
+                                    obj.getString("url"),
+                                    obj.getString("cat_title"),
+                                    obj.getString("title"),
+                                    new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
+                                    obj.getInt("u_id"),
+                                    obj.getString("username"),
+                                    obj.getInt("likes"),
+                                    obj.getInt("dislikes"),
+                                    obj.getInt("reaction"));
                             latestMemeId = obj.getInt("m_id");
-                        } catch (Throwable t) {
-                            Log.e("first meme", "Could not parse malformed JSON: \"" + putData.getResult() + "\"");
-                        }
-                    }
-                }
-            }
-        });
-        Handler handler2 = new Handler();
-        handler2.post(new Runnable() {
-            @Override
-            public void run() {
-                String[] field = {"m_id", "u_id"};
-                String[] data = {String.valueOf(meme[0].m_id), String.valueOf(SharedPreferencesManager.getInstance(getContext()).getUserID())};
-                PutData putData = new PutData("https://meme-dating.one.pl/getMemeReaction.php", "POST", field, data);
-                if (putData.startPut()) {
-                    if (putData.onComplete()) {
-                        try {
-                            JSONObject obj = new JSONObject(putData.getResult());
-                            Log.d("likes", obj.toString());
-                            meme[0].likes = obj.getInt("likes");
-                            meme[0].dislikes = obj.getInt("dislikes");
-                            meme[0].reaction = obj.getInt("reaction");
                             memesArrayList.remove(0);
                             recylerViewAdapter.notifyItemRemoved(0);
                             memesArrayList.add(meme[0]);
