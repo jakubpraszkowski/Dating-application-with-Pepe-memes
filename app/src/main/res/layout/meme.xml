@@ -115,14 +115,26 @@
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="20dp"
         android:background="#00FFFFFF"
         android:contentDescription="download meme"
         android:src="@drawable/baseline_download_24"
         app:layout_constraintBottom_toTopOf="@+id/imageViewMeme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="download meme"
+        android:src="@drawable/baseline_share_24"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewMeme"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

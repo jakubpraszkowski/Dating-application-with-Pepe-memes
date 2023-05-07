@@ -1,22 +1,26 @@
 package com.example.meme_dating;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
+import static androidx.core.content.ContextCompat.startActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +104,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView imageViewMeme;
         TextView titleTextView, authorTextView, dateTextView, categoryText, textID;
         Button likes, dislikes;
-        ImageButton imageButton;
+        ImageButton imageButton, imageButton2;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +117,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             likes = itemView.findViewById(R.id.likeButton);
             dislikes = itemView.findViewById(R.id.dislikeButton);
             imageButton = itemView.findViewById(R.id.imageButton);
+            imageButton2 = itemView.findViewById(R.id.imageButton2);
         }
     }
     private class LoadingviewHolder extends RecyclerView.ViewHolder {
@@ -168,7 +173,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 .into(new Target() {
                                     @Override
                                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                        saveImageToDownloadFolder(mItemList.get(position).title+".png", bitmap);
+                                        saveImageToDownloadFolder(Uri.parse(imageUri).getLastPathSegment(), bitmap);
                                     }
 
                                     @Override
@@ -191,6 +196,16 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 //Toast.makeText(view.getContext(), "download", Toast.LENGTH_SHORT).show();
             }
         });
+        viewHolder.imageButton2.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   Intent shareIntent = new Intent();
+                   shareIntent.setAction(Intent.ACTION_SEND);
+                   shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUri));
+                   shareIntent.setType("image/png");
+                   startActivity(context, Intent.createChooser(shareIntent, "share"), null);
+               }
+           });
         viewHolder.likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -314,8 +329,9 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), imageFile);
             int counter = 1;
             String newFileName = imageFile;
+            String extension = newFileName.substring(newFileName.lastIndexOf("."));
             while(filePath.exists()){
-                newFileName = imageFile.substring(0, imageFile.length() - 4)+"("+counter+").png";
+                newFileName = imageFile.substring(0, imageFile.lastIndexOf('.') )+"("+counter+")"+extension;
                 filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), newFileName);
                 counter++;
             }
