@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="50dp"
+    android:padding="2dp">
+
+    <RelativeLayout
+        android:id="@+id/layoutmessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/sender_chat">
+
+        <TextView
+            android:id="@+id/messagesender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIE MAM CZASU"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:paddingLeft="7dp"
+            android:paddingRight="40dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/messagesender"
+            android:layout_marginLeft="-40dp"
+            android:layout_toRightOf="@id/messagesender"
+            android:padding="7dp"
+            android:text="12:48"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
