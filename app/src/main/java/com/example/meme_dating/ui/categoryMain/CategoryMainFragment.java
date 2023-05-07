@@ -171,13 +171,13 @@ public class CategoryMainFragment extends Fragment {
         recylerViewAdapter.notifyItemInserted(memesArrayList.size() - 1);
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 newMemes(3);
                 isLoading = false;
             }
-        }, 1000);
+        });
     }
     public void initAdapter() {
         recylerViewAdapter = new RecylerViewAdapter(memesArrayList);
