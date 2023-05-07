@@ -85,11 +85,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@drawable/button_background_tint"
-        app:iconTint="@color/black"
-        android:textColor="@color/black"
         android:text="likes"
+        android:textColor="@color/black"
         app:icon="@drawable/baseline_arrow_upward_24"
+        app:iconTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewMeme" />
 
@@ -99,12 +101,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:text="dislikes"
-        app:icon="@drawable/baseline_arrow_downward_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewMeme"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@drawable/button_background_tint"
+        android:text="dislikes"
+        android:textColor="@color/black"
+        app:icon="@drawable/baseline_arrow_downward_24"
         app:iconTint="@color/black"
-        android:textColor="@color/black"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewMeme" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dislikeButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
