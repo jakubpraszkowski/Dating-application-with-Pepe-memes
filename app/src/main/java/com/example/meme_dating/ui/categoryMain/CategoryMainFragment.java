@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 public class CategoryMainFragment extends Fragment {
     public RecyclerView recyclerView;
@@ -35,6 +37,7 @@ public class CategoryMainFragment extends Fragment {
     public int cat_id;
     public int memesInThatCategory;
     public int latestMemeId;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cat_id = 0;
         Handler handler = new Handler();
@@ -101,7 +104,7 @@ public class CategoryMainFragment extends Fragment {
                                     obj.getString("url"),
                                     obj.getString("cat_title"),
                                     obj.getString("title"),
-                                    new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
+                                        LocalDateTime.parse(obj.getString("add_date"), formatter),
                                     obj.getInt("u_id"),
                                     obj.getString("username"),
                                     obj.getInt("likes"),
@@ -139,7 +142,7 @@ public class CategoryMainFragment extends Fragment {
                                     obj.getString("url"),
                                     obj.getString("cat_title"),
                                     obj.getString("title"),
-                                    new SimpleDateFormat("yyyy-MM-dd").parse(obj.getString("add_date") ),
+                                    LocalDateTime.parse(obj.getString("add_date"), formatter),
                                     obj.getInt("u_id"),
                                     obj.getString("username"),
                                     obj.getInt("likes"),
