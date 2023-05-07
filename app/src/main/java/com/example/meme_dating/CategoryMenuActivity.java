@@ -63,7 +63,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
                 PutData putData = new PutData("https://meme-dating.one.pl/getUserID.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
-                        SharedPreferencesManager.getInstance(getApplicationContext()).setUserID(Integer.parseInt(putData.getResult())) ;
+                        SharedPreferencesManager.getInstance(getApplicationContext()).setUserID(Integer. parseInt(putData.getResult())) ;
                     }
                 }
             }
