@@ -80,7 +80,10 @@ public class CategoryMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_my_profile) {
-            Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "open your profile here "+ SharedPreferencesManager.getInstance(getApplicationContext()).getUserID(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, UserProfile.class);
+            intent.putExtra("user_id", SharedPreferencesManager.getInstance(getApplicationContext()).getUserID());
+            startActivity(intent);
             return true;
         }else if (item.getItemId() == R.id.action_my_instruction) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
