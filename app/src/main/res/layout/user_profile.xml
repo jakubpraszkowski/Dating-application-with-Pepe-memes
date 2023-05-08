@@ -49,6 +49,7 @@
         android:padding="16dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
+        android:gravity="center_horizontal"
         android:textStyle="bold" />
 
     <!-- Tytuł listy kategorii z punktami -->
@@ -66,18 +67,13 @@
         android:paddingTop="16dp"
         android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/categoryTextView"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listViewMemes"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Category: "
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/pointsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Points: "
-        android:textSize="20sp" />
 
 </LinearLayout>
