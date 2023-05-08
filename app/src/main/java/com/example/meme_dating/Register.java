@@ -68,7 +68,7 @@ public class Register extends AppCompatActivity {
                                     if (putData.onComplete()) {
                                         progressBar.setVisibility(View.GONE);
                                         String result = putData.getResult();
-                                        if (result.equals("Zarejestrowano")) {
+                                        if (result.equals("Signed up")) {
                                             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(getApplicationContext(), CategoryMenuActivity.class);
                                             startActivity(intent);
@@ -83,7 +83,7 @@ public class Register extends AppCompatActivity {
                     });
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Wszystkie pola są wymagane", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

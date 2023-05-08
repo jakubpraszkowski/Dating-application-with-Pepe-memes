@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity {
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             String result = putData.getResult();
-                            if(result.equals("Zalogowano")){
+                            if(result.equals("Logged in")){
                                 SharedPreferencesManager.getInstance(getApplicationContext()).setStatus(true);
                                 SharedPreferencesManager.getInstance(getApplicationContext()).setUsername(data[0]);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
@@ -75,7 +75,7 @@ public class Login extends AppCompatActivity {
                 });
             }
             else{
-                Toast.makeText(getApplicationContext(), "Wszystkie pola są wymagane!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
             }
         });
     }
