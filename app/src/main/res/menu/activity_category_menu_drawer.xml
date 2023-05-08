@@ -14,11 +14,11 @@
             android:title="@string/menu_category1" />
         <item
             android:id="@+id/nav_category2"
-            android:icon="@drawable/baseline_menu_book_24"
+            android:icon="@drawable/funny_icon"
             android:title="@string/menu_category2" />
         <item
             android:id="@+id/nav_category3"
-            android:icon="@drawable/baseline_fingerprint_24"
+            android:icon="@drawable/anime_icon"
             android:title="@string/menu_category3" />
         <item
             android:id="@+id/nav_category4"
@@ -26,7 +26,19 @@
             android:title="@string/menu_category4" />
         <item
             android:id="@+id/nav_category5"
-            android:icon="@drawable/baseline_tsunami_24"
+            android:icon="@drawable/skull_icon"
             android:title="@string/menu_category5" />
+        <item
+            android:id="@+id/nav_category6"
+            android:icon="@drawable/baseline_menu_book_24"
+            android:title="@string/menu_category6" />
+        <item
+            android:id="@+id/nav_category7"
+            android:icon="@drawable/queer_icon"
+            android:title="@string/menu_category7" />
+        <item
+            android:id="@+id/nav_category8"
+            android:icon="@drawable/trash_icon"
+            android:title="@string/menu_category8" />
     </group>
 </menu>
