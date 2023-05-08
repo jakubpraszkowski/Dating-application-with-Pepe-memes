@@ -12,10 +12,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/jakubpraszkowski/Dating-application-with-memes">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://imgur.com/0aIlTWC" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Mobile dating app</h3>
+<h3 align="center">Mobile meme app</h3>
 
   <p align="center">
     Looking for a spouse, friend or stranger to write code in assembly? Now you can make it using this dating app! The partner is picked by matching your meme spectrum, so choose meme you like wisely!
