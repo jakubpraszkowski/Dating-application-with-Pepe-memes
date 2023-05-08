@@ -303,12 +303,12 @@ public class RecylerViewAdapter
         Intent intent = new Intent(view.getContext(), UserProfile.class);
         intent.putExtra("user_id", mItemList.get(position).u_id);
         view.getContext().startActivity(intent);
-        Toast
-            .makeText(view.getContext(),
-                      "open profile of user with id: " +
-                          mItemList.get(position).u_id,
-                      Toast.LENGTH_SHORT)
-            .show();
+//        Toast
+//            .makeText(view.getContext(),
+//                      "open profile of user with id: " +
+//                          mItemList.get(position).u_id,
+//                      Toast.LENGTH_SHORT)
+//            .show();
       }
     });
     viewHolder.likes.setOnClickListener(new View.OnClickListener() {

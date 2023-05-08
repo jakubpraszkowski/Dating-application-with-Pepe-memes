@@ -11,8 +11,8 @@ class DataBaseConfig
     {
 
         $this->servername = 'localhost';
-        $this->username = 'root';
-        $this->password = '';
+        $this->username = 'memeapp';
+        $this->password = 'qIxg2edPN1Jujz8BfmFSyA7hmJ0dCG';
         $this->databasename = 'meme_dating';
 
     }

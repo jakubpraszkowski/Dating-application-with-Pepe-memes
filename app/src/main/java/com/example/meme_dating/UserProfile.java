@@ -59,7 +59,7 @@ public class UserProfile extends AppCompatActivity {
             field[0] = "u_id";
             String[] data = new String[1];
             data[0] = String.valueOf(userId);
-            PutData putData = new PutData("http://10.0.2.2/getUserProfile.php", "POST", field, data);
+            PutData putData = new PutData("https://meme-dating.one.pl/getUserProfile.php", "POST", field, data);
 
 
             if (putData.startPut()) {

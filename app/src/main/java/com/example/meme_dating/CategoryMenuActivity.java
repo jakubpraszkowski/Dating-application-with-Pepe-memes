@@ -76,6 +76,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.category_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_my_profile) {
