@@ -8,5 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="button_selected">#C9C9C9</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryVariant">#141414</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#ADB5BD</color>
+    <color name="colorSecondaryVariant">#ced4da</color>
+    <color name="colorOnSecondary">#1B1B1B</color>
 </resources>

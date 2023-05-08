@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/overflowMenu"
-        android:icon="@drawable/baseline_more_vert_24"
+        android:icon="@drawable/baseline_more_vert_24_white"
         android:title=""
         app:showAsAction="always">
         <menu>
