@@ -21,7 +21,7 @@
         android:id="@+id/categories_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Osiągnięcia użytkownika"
+        android:text="Statystyki użytkownika"
         android:textColor="@android:color/black"
         android:gravity="center_horizontal"
         android:textSize="18sp"
@@ -34,10 +34,20 @@
     <ListView
         android:id="@+id/listViewMemes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:padding="10dp"
         android:textColor="@android:color/black"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/pie_chart"
+        android:layout_marginTop="8dp">
+
+    </com.github.mikephil.charting.charts.PieChart>
+
 
 
 </LinearLayout>
