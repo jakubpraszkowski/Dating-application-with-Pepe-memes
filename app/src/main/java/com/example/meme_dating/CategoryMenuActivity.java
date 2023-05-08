@@ -83,7 +83,12 @@ public class CategoryMenuActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "show instructions here", Toast.LENGTH_SHORT).show();
             return true;
         }else if (item.getItemId() == R.id.action_logout) {
-            Toast.makeText(getBaseContext(), "logout here", Toast.LENGTH_SHORT).show();
+            SharedPreferencesManager.getInstance(getApplicationContext()).logOut();
+            Toast.makeText(getBaseContext(), "Logged out", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

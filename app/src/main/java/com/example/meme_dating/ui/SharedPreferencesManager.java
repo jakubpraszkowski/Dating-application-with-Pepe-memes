@@ -33,21 +33,24 @@ public class SharedPreferencesManager {
         editor.apply();
     }
     public String getUsername() {
-        String usernameValue = sp.getString("username", null);
-        return usernameValue;
+        return sp.getString("username", null);
     }
     public int getUserID() {
-        int userIDValue = sp.getInt("userID", 0);
-        return userIDValue;
+        return sp.getInt("userID", 0);
     }
     public void setStatus(Boolean logged) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("logged", logged);
         editor.apply();
     }
-
     public Boolean getStatus() {
-        Boolean loggedValue = sp.getBoolean("logged", false);
-        return loggedValue;
+        return sp.getBoolean("logged", false);
+    }
+    public void logOut(){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", "");
+        editor.putInt("userID", 0);
+        editor.putBoolean("logged", false);
+        editor.apply();
     }
 }
