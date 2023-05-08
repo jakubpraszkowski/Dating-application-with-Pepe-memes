@@ -71,10 +71,8 @@ public class UserProfile extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             username = jsonObject.getString("username");
                             String category = jsonObject.optString("title", "Brak kategorii");
-                            int point = jsonObject.optInt("points", 0);
-                            if(point != 0)
-                                categories.add("Kategoria: " + category + "\nZdobyte punkty:" + point );
-                            else categories.add("Brak osiągnięć!");
+                            int points = jsonObject.optInt("points", 0);
+                            categories.add("Kategoria: " + category + "\nZdobyte punkty:" + points );
 
                         }
                         setTitle(username+"'s profile");
