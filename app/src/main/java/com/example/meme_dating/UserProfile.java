@@ -20,6 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
@@ -38,6 +43,8 @@ public class UserProfile extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     List<String> categories = new ArrayList<>();
     List<Integer> points = new ArrayList<>();
+
+    PieChart pieChart;
     String username;
 
     @Override
@@ -47,6 +54,8 @@ public class UserProfile extends AppCompatActivity {
 
         usernameTextView = findViewById(R.id.user_name);
         categoryPointsListView = findViewById(R.id.listViewMemes);
+
+
 
 
         int userId = getIntent().getIntExtra("user_id", 0);
@@ -59,6 +68,8 @@ public class UserProfile extends AppCompatActivity {
             data[0] = String.valueOf(userId);
             PutData putData = new PutData("https://meme-dating.one.pl/getUserProfile.php", "POST", field, data);
 
+            pieChart = findViewById(R.id.pie_chart);
+
 
             if (putData.startPut()) {
                 if (putData.onComplete()) {
@@ -67,22 +78,38 @@ public class UserProfile extends AppCompatActivity {
                     try {
                         JSONArray jsonArray = new JSONArray(result);
 
+                        ArrayList<String> categories = new ArrayList<>();
+                        ArrayList<Integer> points = new ArrayList<>();
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             username = jsonObject.getString("username");
+
                             String category = jsonObject.optString("title", "Brak kategorii");
-                            int points = jsonObject.optInt("points", 0);
-                            categories.add("Kategoria: " + category + "\nZdobyte punkty:" + points );
+                            int point = jsonObject.optInt("points", 0);
 
+                            categories.add(category);
+                            points.add(point);
                         }
-                        setTitle(username+"'s profile");
 
-                        adapter = new ArrayAdapter<>(UserProfile.this,
-                                android.R.layout.simple_list_item_1, categories);
-                        categoryPointsListView.setAdapter(adapter);
+                        ArrayList<PieEntry> entries = new ArrayList<>();
+                        for (int i = 0; i < categories.size(); i++) {
+                            entries.add(new PieEntry(points.get(i), categories.get(i)));
+                        }
+
+                        PieDataSet dataSet = new PieDataSet(entries, "Categories");
+                        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+                        PieData dataPie = new PieData(dataSet);
+
+                        pieChart.setData(dataPie);
+                        pieChart.invalidate();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+
                 }
             }
         });
@@ -90,7 +117,11 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_white_24);
+
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
