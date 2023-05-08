@@ -6,15 +6,18 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,8 +40,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -192,13 +198,42 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             }
                         }
                         if (item.getItemId() == R.id.action_share){
-                            Intent shareIntent = new Intent();
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUri));
-                            shareIntent.setType("image/png");
-                            startActivity(context, Intent.createChooser(shareIntent, "share"), null);
-                        }
+                            Picasso.get()
+                                .load(imageUri)
+                                .into(new Target() {
+                                    @Override
+                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                        ContentValues values = new ContentValues();
+                                        values.put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg");
+                                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+                                        }
+                                        Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                        try {
+                                            OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                                            outputStream.close();
+                                            values.clear();
+                                            values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                                            context.getContentResolver().update(uri, values, null, null);
 
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        Intent share = new Intent(Intent.ACTION_SEND);
+                                        share.setType("image/jpeg");
+                                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                                        startActivity(context, Intent.createChooser(share, "Select"), null );
+                                    }
+                                    @Override
+                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                    }
+                                    @Override
+                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                    }
+                                });
+                        }
                         return false;
                     }
                 });
