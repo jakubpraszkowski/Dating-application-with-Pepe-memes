@@ -36,6 +36,9 @@
             android:theme="@style/Theme.Meme_dating.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".UserProfile"
             android:exported="false">
 
         </activity>

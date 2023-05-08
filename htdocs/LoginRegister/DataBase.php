@@ -206,6 +206,37 @@ class DataBase
 		$userID = json_encode($row);
 		return $userID;
     }
+
+    function getUserProfile($u_id)
+        {
+            $u_id = $this->prepareData($u_id);
+
+            $this->sql = "SELECT u.username, c.title, SUM(ml.reaction) AS points FROM users u
+            JOIN meme_likes ml ON u.u_id = ml.u_id
+            JOIN memes m ON ml.m_id = m.m_id
+            JOIN categories c ON m.cat_id = c.cat_id
+            WHERE u.u_id = ".$u_id."
+            GROUP BY u.username, c.title;";
+            $data = array();
+            $result = mysqli_query($this->connect, $this->sql);
+
+            if($result->num_rows != 0)
+            {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $data[] = $row;
+                }
+            }
+            else {
+                $this->sql = "SELECT username FROM users WHERE u_id = ".$u_id.";";
+
+                $result = mysqli_query($this->connect, $this->sql);
+
+                $row = mysqli_fetch_assoc($result);
+                $data[] = $row;
+            }
+
+            return json_encode($data);
+        }
 }
 
 ?>
