@@ -2,9 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_my_profile"
-        android:orderInCategory="100"
-        android:icon="@drawable/user"
-        android:title="@string/action_my_profile"
-        app:showAsAction="always" />
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/baseline_more_vert_24"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_my_profile"
+                android:icon="@drawable/user"
+                android:title="@string/action_my_profile"
+                />
+            <item
+                android:id="@+id/action_my_instruction"
+                android:icon="@drawable/baseline_info_24"
+                android:title="@string/action_instruction"
+                />
+            <item
+                android:id="@+id/action_logout"
+                android:icon="@drawable/baseline_logout_24"
+                android:title="@string/action_logout"
+                />
+        </menu>
+    </item>
+
+
 </menu>

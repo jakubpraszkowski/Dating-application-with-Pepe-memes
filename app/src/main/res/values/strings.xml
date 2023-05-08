@@ -10,7 +10,10 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+
     <string name="action_my_profile">My profile</string>
+    <string name="action_instruction">How to use</string>
+    <string name="action_logout">Logout</string>
 
     <string name="menu_main">Main</string>
     <string name="menu_category1">IT</string>

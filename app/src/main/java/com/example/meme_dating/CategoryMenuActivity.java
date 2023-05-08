@@ -79,6 +79,12 @@ public class CategoryMenuActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_my_profile) {
             Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
             return true;
+        }else if (item.getItemId() == R.id.action_my_instruction) {
+            Toast.makeText(getBaseContext(), "show instructions here", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (item.getItemId() == R.id.action_logout) {
+            Toast.makeText(getBaseContext(), "logout here", Toast.LENGTH_SHORT).show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
