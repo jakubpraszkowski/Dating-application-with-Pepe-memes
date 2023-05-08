@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">meme_dating</string>
+    <string name="app_name">NDJM</string>
+    <string name="app_name_full">No dating just MEMES</string>
     <string name="login">Login</string>
     <string name="returntopreviouspage">Return to Login page</string>
     <string name="Password">Password</string>
