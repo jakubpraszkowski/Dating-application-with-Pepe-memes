@@ -1,5 +1,6 @@
 package com.example.meme_dating;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -80,8 +82,18 @@ public class CategoryMenuActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
             return true;
         }else if (item.getItemId() == R.id.action_my_instruction) {
-            Toast.makeText(getBaseContext(), "show instructions here", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("How to use");
+            builder.setMessage("App allows users to both upload and download memes. You can share best memes you found on the internet and on the app. In home you can scroll all the way down looking for funny memes and like them or dislike.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            }
+            );
+            builder.show();
             return true;
+
         }else if (item.getItemId() == R.id.action_logout) {
             SharedPreferencesManager.getInstance(getApplicationContext()).logOut();
             Toast.makeText(getBaseContext(), "Logged out", Toast.LENGTH_SHORT).show();
