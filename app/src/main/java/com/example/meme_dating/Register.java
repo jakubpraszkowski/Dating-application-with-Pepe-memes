@@ -1,12 +1,19 @@
 package com.example.meme_dating;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +27,8 @@ public class Register extends AppCompatActivity {
     Button buttonRegister;
     TextView textViewLogin;
     ProgressBar progressBar;
+    CheckBox checkBox;
+    TextView textViewreg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,24 @@ public class Register extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonSignUp);
         textViewLogin = findViewById(R.id.loginText);
         progressBar = findViewById(R.id.progress);
+        checkBox = findViewById(R.id.checkBox);
+        textViewreg = findViewById(R.id.textViewreg);
+
+
+        textViewreg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Rules");
+                builder.setMessage("Go do everything, but never be a pirate kid");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
 
         textViewLogin.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -47,7 +74,7 @@ public class Register extends AppCompatActivity {
                 username = String.valueOf(textInputEditTextUsername.getText());
                 password = String.valueOf(textInputEditTextPassword.getText());
 
-                if (!username.equals("") && !password.equals("")) {
+                if (!username.equals("") && !password.equals("") && checkBox.isChecked()) {
                     progressBar.setVisibility(View.VISIBLE);
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
@@ -64,8 +91,7 @@ public class Register extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Wrong IP Address", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                if (putData.startPut()) {
-                                    if (putData.onComplete()) {
+                                if (putData.startPut() && putData.onComplete()) {
                                         progressBar.setVisibility(View.GONE);
                                         String result = putData.getResult();
                                         if (result.equals("Signed up")) {
@@ -76,7 +102,6 @@ public class Register extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                         }
-                                    }
                                 }
                             }
                         }
