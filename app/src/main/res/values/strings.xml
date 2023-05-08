@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">meme_dating</string>
     <string name="login">Login</string>
-    <string name="returntopreviouspage">returnToPreviousPage</string>
+    <string name="returntopreviouspage">Return to Login page</string>
     <string name="Password">Password</string>
     <string name="Register">Register</string>
     <string name="title_activity_category_menu">CategoryMenuActivity</string>
