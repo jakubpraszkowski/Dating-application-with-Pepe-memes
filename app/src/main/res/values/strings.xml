@@ -28,4 +28,8 @@
     <string name="menu_category6">Academical</string>
     <string name="menu_category7">Queer</string>
     <string name="menu_category8">Gaming</string>
+    
+    <string name="instruction">
+        The application enables its users to upload and download memes, thus allowing them to share the most entertaining ones they come across online or within the app itself. Users can scroll through the main or category pages and either like or dislike the amusing memes they encounter. Wanna see your, or other people\'s liking statistics? Check out their profiles.
+    </string>
 </resources>

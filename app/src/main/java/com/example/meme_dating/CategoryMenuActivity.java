@@ -84,7 +84,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
         }else if (item.getItemId() == R.id.action_my_instruction) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("How to use");
-            builder.setMessage("App allows users to both upload and download memes. You can share best memes you found on the internet and on the app. In home you can scroll all the way down looking for funny memes and like them or dislike.");
+            builder.setMessage(R.string.instruction);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
