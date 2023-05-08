@@ -131,7 +131,7 @@ class DataBase
             $result = mysqli_query($this->connect, $this->sql);
             $meme_likes = mysqli_fetch_assoc($result);
     
-            $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $meme['m_id'] . "' AND reaction = 0;";
+            $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $meme['m_id'] . "' AND reaction = -1;";
             $result = mysqli_query($this->connect, $this->sql);
             $meme_dislikes = mysqli_fetch_assoc($result);
     
@@ -163,7 +163,7 @@ class DataBase
             $result = mysqli_query($this->connect, $this->sql);
             $meme_likes = mysqli_fetch_assoc($result);
     
-            $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $meme['m_id'] . "' AND reaction = 0;";
+            $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $meme['m_id'] . "' AND reaction = -1;";
             $result = mysqli_query($this->connect, $this->sql);
             $meme_dislikes = mysqli_fetch_assoc($result);
     
@@ -265,7 +265,7 @@ class DataBase
                 $result = mysqli_query($this->connect, $this->sql);
                 $meme_likes = mysqli_fetch_assoc($result);
         
-                $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $row['m_id'] . "' AND reaction = 0;";
+                $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $row['m_id'] . "' AND reaction = -1;";
                 $result = mysqli_query($this->connect, $this->sql);
                 $meme_dislikes = mysqli_fetch_assoc($result);
         
@@ -301,7 +301,7 @@ class DataBase
                 $result = mysqli_query($this->connect, $this->sql);
                 $meme_likes = mysqli_fetch_assoc($result);
         
-                $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $row['m_id'] . "' AND reaction = 0;";
+                $this->sql = "SELECT COUNT(like_id) AS dislikes FROM meme_likes WHERE m_id = '" . $row['m_id'] . "' AND reaction = -1;";
                 $result = mysqli_query($this->connect, $this->sql);
                 $meme_dislikes = mysqli_fetch_assoc($result);
                 
