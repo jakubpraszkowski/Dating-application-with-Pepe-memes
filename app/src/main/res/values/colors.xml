@@ -8,6 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="button_enabled">#D3D1D1</color>
-    <color name="button_disabled">#505050</color>
+    <color name="button_selected">#C9C9C9</color>
 </resources>

@@ -150,9 +150,9 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
 
         if(mItemList.get(position).reaction == 1){ //liked
-            viewHolder.dislikes.setEnabled(false);
+            viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
         }else if(mItemList.get(position).reaction == 0){ //disliked
-            viewHolder.likes.setEnabled(false);
+            viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
         }
         String imageUri = mItemList.get(position).url;
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
@@ -209,7 +209,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mItemList.get(position).reaction == 1){ //remove like
+                if(mItemList.get(position).reaction == 1) {         //remove like
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -222,46 +222,17 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     try {
                                         mItemList.get(position).likes = mItemList.get(position).likes-1;
                                         mItemList.get(position).reaction = 3;
-                                        viewHolder.dislikes.setEnabled(true);
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
                                     }
-                                }
-                            }
-                        }
-                    });
-                }else { //add like
-                    Handler handler = new Handler();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String[] field = {"m_id", "u_id", "reaction"};
-                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "1"};
-                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
-                            if (putData.startPut()) {
-                                if (putData.onComplete()) {
-                                    try {
-                                        mItemList.get(position).likes = mItemList.get(position).likes+1;
-                                        mItemList.get(position).reaction = 1;
-                                        viewHolder.dislikes.setEnabled(false);
-                                        viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
-                                        Log.d("likes", putData.getData());
-                                    } catch (Throwable t) {
-
-                                    }
-
                                 }
                             }
                         }
                     });
                 }
-            }
-        });
-        viewHolder.dislikes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mItemList.get(position).reaction == 0){ //remove dislike
+                else if (mItemList.get(position).reaction == 0) {   //change from dislike to like
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -274,8 +245,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     try {
                                         mItemList.get(position).dislikes = mItemList.get(position).dislikes-1;
                                         mItemList.get(position).reaction = 3;
-                                        viewHolder.likes.setEnabled(true);
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
                                     }
@@ -283,7 +254,127 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             }
                         }
                     });
-                }else { //dislike
+                    Handler handler2 = new Handler();
+                    handler2.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] field = {"m_id", "u_id", "reaction"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "1"};
+                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
+                            if (putData.startPut()) {
+                                if (putData.onComplete()) {
+                                    try {
+                                        mItemList.get(position).likes = mItemList.get(position).likes+1;
+                                        mItemList.get(position).reaction = 1;
+                                        viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
+                                        Log.d("likes", putData.getData());
+                                    } catch (Throwable t) {
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                else{                                               //add like
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] field = {"m_id", "u_id", "reaction"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "1"};
+                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
+                            if (putData.startPut()) {
+                                if (putData.onComplete()) {
+                                    try {
+                                        mItemList.get(position).likes = mItemList.get(position).likes+1;
+                                        mItemList.get(position).reaction = 1;
+                                        viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
+                                        Log.d("likes", putData.getData());
+                                    } catch (Throwable t) {
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        viewHolder.dislikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mItemList.get(position).reaction == 0) {         //remove dislike
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] field = {"m_id", "u_id"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID())};
+                            PutData putData = new PutData("https://meme-dating.one.pl/removeReaction.php", "POST", field, data);
+                            if (putData.startPut()) {
+                                if (putData.onComplete()) {
+                                    try {
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes-1;
+                                        mItemList.get(position).reaction = 3;
+                                        viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
+                                        Log.d("likes", putData.getData());
+                                    } catch (Throwable t) {
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                else if (mItemList.get(position).reaction == 1) {   //change from like to dislike
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] field = {"m_id", "u_id"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID())};
+                            PutData putData = new PutData("https://meme-dating.one.pl/removeReaction.php", "POST", field, data);
+                            if (putData.startPut()) {
+                                if (putData.onComplete()) {
+                                    try {
+                                        mItemList.get(position).likes = mItemList.get(position).likes-1;
+                                        mItemList.get(position).reaction = 3;
+                                        viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
+                                        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
+                                        Log.d("likes", putData.getData());
+                                    } catch (Throwable t) {
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    Handler handler2 = new Handler();
+                    handler2.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] field = {"m_id", "u_id", "reaction"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "0"};
+                            PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
+                            if (putData.startPut()) {
+                                if (putData.onComplete()) {
+                                    try {
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes+1;
+                                        mItemList.get(position).reaction = 0;
+                                        viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
+                                        Log.d("likes", putData.getData());
+                                    } catch (Throwable t) {
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                else{                                               //add dislike
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -296,10 +387,11 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     try {
                                         mItemList.get(position).dislikes = mItemList.get(position).dislikes+1;
                                         mItemList.get(position).reaction = 0;
-                                        viewHolder.likes.setEnabled(false);
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
+                                        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
+
                                     }
                                 }
                             }
