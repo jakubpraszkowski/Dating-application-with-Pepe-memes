@@ -116,27 +116,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButtonMenuPopup"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="20dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="download meme"
-        android:src="@drawable/baseline_download_24"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewMeme"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="download meme"
-        android:src="@drawable/baseline_share_24"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewMeme"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_more_vert_24"
+        android:contentDescription="meme menu popup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

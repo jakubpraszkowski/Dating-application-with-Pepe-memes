@@ -15,6 +15,9 @@
     <string name="action_instruction">How to use</string>
     <string name="action_logout">Logout</string>
 
+    <string name="popup_menu_share">Share</string>
+    <string name="popup_menu_download">Download</string>
+
     <string name="menu_main">Main</string>
     <string name="menu_category1">IT</string>
     <string name="menu_category2">Political</string>

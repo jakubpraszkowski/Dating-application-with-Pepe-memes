@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,17 +18,21 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,7 +100,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView imageViewMeme;
         TextView titleTextView, authorTextView, dateTextView, categoryText, textID;
         Button likes, dislikes;
-        ImageButton imageButton, imageButton2;
+        ImageButton imageButtonMenuPopup;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,8 +112,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             textID = itemView.findViewById(R.id.textID);
             likes = itemView.findViewById(R.id.likeButton);
             dislikes = itemView.findViewById(R.id.dislikeButton);
-            imageButton = itemView.findViewById(R.id.imageButton);
-            imageButton2 = itemView.findViewById(R.id.imageButton2);
+            imageButtonMenuPopup = itemView.findViewById(R.id.imageButtonMenuPopup);
         }
     }
     private class LoadingviewHolder extends RecyclerView.ViewHolder {
@@ -131,6 +135,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return ChronoUnit.DAYS.between(date2, date1)+"d";
         }
     }
+    @SuppressLint("RestrictedApi")
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
         viewHolder.textID.setText(String.valueOf(mItemList.get(position).u_id));
         viewHolder.titleTextView.setText(mItemList.get(position).title);
@@ -148,6 +153,59 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         String imageUri = mItemList.get(position).url;
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
 
+        viewHolder.imageButtonMenuPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu menu = new PopupMenu(context, viewHolder.imageButtonMenuPopup);
+                menu.inflate(R.menu.popup_meme_menu);
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId()== R.id.action_download){
+                            if(isStoragePermissionGranted()){
+                                String state = Environment.getExternalStorageState();
+                                if (Environment.MEDIA_MOUNTED.equals(state)){
+                                    Picasso.get()
+                                            .load(imageUri)
+                                            .into(new Target() {
+                                                @Override
+                                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                                    saveImageToDownloadFolder(Uri.parse(imageUri).getLastPathSegment(), bitmap);
+                                                }
+
+                                                @Override
+                                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                                                }
+
+                                                @Override
+                                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                                }
+                                            });
+                                } else if(Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)){
+
+                                    Toast.makeText(context, "Storage is read only", Toast.LENGTH_SHORT).show();
+                                } else {
+
+                                    Toast.makeText(context, "Storage does not exist", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                        if (item.getItemId() == R.id.action_share){
+                            Intent shareIntent = new Intent();
+                            shareIntent.setAction(Intent.ACTION_SEND);
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUri));
+                            shareIntent.setType("image/png");
+                            startActivity(context, Intent.createChooser(shareIntent, "share"), null);
+                        }
+
+                        return false;
+                    }
+                });
+                menu.setForceShowIcon(true);
+                menu.show();
+            }
+        });
         viewHolder.imageViewMeme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,50 +236,6 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Toast.makeText(view.getContext(), "open profile of user with id: "+mItemList.get(position).u_id, Toast.LENGTH_SHORT).show();
             }
         });
-        viewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isStoragePermissionGranted()){
-                    String state = Environment.getExternalStorageState();
-                    if (Environment.MEDIA_MOUNTED.equals(state)){
-                        Picasso.get()
-                                .load(imageUri)
-                                .into(new Target() {
-                                    @Override
-                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                        saveImageToDownloadFolder(Uri.parse(imageUri).getLastPathSegment(), bitmap);
-                                    }
-
-                                    @Override
-                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                    }
-
-                                    @Override
-                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                    }
-                                });
-                    } else if(Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)){
-
-                        Toast.makeText(context, "Storage is read only", Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        Toast.makeText(context, "Storage does not exist", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                //Toast.makeText(view.getContext(), "download", Toast.LENGTH_SHORT).show();
-            }
-        });
-        viewHolder.imageButton2.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Intent shareIntent = new Intent();
-                   shareIntent.setAction(Intent.ACTION_SEND);
-                   shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUri));
-                   shareIntent.setType("image/png");
-                   startActivity(context, Intent.createChooser(shareIntent, "share"), null);
-               }
-           });
         viewHolder.likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
