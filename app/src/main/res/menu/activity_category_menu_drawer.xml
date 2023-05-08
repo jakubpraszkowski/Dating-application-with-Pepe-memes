@@ -38,7 +38,7 @@
             android:title="@string/menu_category7" />
         <item
             android:id="@+id/nav_category8"
-            android:icon="@drawable/trash_icon"
+            android:icon="@drawable/gaming_icon"
             android:title="@string/menu_category8" />
     </group>
 </menu>
