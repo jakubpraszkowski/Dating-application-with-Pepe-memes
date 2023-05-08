@@ -160,7 +160,7 @@ public class RecylerViewAdapter
     if (mItemList.get(position).reaction == 1) { // liked
       viewHolder.likes.setBackgroundResource(
           R.drawable.like_button_bg_selected);
-    } else if (mItemList.get(position).reaction == 0) { // disliked
+    } else if (mItemList.get(position).reaction == -1) { // disliked
       viewHolder.dislikes.setBackgroundResource(
           R.drawable.like_button_bg_selected);
     }
@@ -344,8 +344,7 @@ public class RecylerViewAdapter
               }
             }
           });
-        } else if (mItemList.get(position).reaction ==
-                   0) { // change from dislike to like
+        } else if (mItemList.get(position).reaction == -1) { // change from dislike to like
           Handler handler = new Handler();
           handler.post(new Runnable() {
             @Override
@@ -442,7 +441,7 @@ public class RecylerViewAdapter
     viewHolder.dislikes.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (mItemList.get(position).reaction == 0) { // remove dislike
+        if (mItemList.get(position).reaction == -1) { // remove dislike
           Handler handler = new Handler();
           handler.post(new Runnable() {
             @Override
@@ -512,7 +511,7 @@ public class RecylerViewAdapter
                   String.valueOf(mItemList.get(position).m_id),
                   String.valueOf(SharedPreferencesManager.getInstance(context)
                                      .getUserID()),
-                  "0"};
+                  "-1"};
               PutData putData =
                   new PutData("https://meme-dating.one.pl/addReaction.php",
                               "POST", field, data);
@@ -543,7 +542,7 @@ public class RecylerViewAdapter
                   String.valueOf(mItemList.get(position).m_id),
                   String.valueOf(SharedPreferencesManager.getInstance(context)
                                      .getUserID()),
-                  "0"};
+                  "-1"};
               PutData putData =
                   new PutData("https://meme-dating.one.pl/addReaction.php",
                               "POST", field, data);
