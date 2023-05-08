@@ -387,7 +387,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
-                                        Log.d("likes", putData.getData());
+                                        Log.d("likes", putData.getData()+"remove dislike");
                                     } catch (Throwable t) {
                                     }
                                 }
@@ -427,7 +427,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 if (putData.onComplete()) {
                                     try {
                                         mItemList.get(position).dislikes = mItemList.get(position).dislikes + 1;
-                                        mItemList.get(position).reaction = 0;
+                                        mItemList.get(position).reaction = -1;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
@@ -449,10 +449,10 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 if (putData.onComplete()) {
                                     try {
                                         mItemList.get(position).dislikes = mItemList.get(position).dislikes + 1;
-                                        mItemList.get(position).reaction = 0;
+                                        mItemList.get(position).reaction = -1;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
-                                        Log.d("likes", putData.getData());
+                                        Log.d("likes", putData.getData()+"add dislike");
                                     } catch (Throwable t) {
                                     }
                                 }
