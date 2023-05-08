@@ -46,10 +46,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_main)
-                .setOpenableLayout(drawer)
-                .build();
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_main).setOpenableLayout(drawer).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_category_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -80,7 +77,7 @@ public class CategoryMenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_my_profile) {
-            Toast.makeText(getBaseContext(), "open your profile here "+ SharedPreferencesManager.getInstance(getApplicationContext()).getUserID(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(), "open your profile here "+ SharedPreferencesManager.getInstance(getApplicationContext()).getUserID(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, UserProfile.class);
             intent.putExtra("user_id", SharedPreferencesManager.getInstance(getApplicationContext()).getUserID());
             startActivity(intent);

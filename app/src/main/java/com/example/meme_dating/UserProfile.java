@@ -1,10 +1,15 @@
 package com.example.meme_dating;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -38,14 +44,6 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-
-        backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         usernameTextView = findViewById(R.id.user_name);
         categoryPointsListView = findViewById(R.id.listViewMemes);
@@ -79,7 +77,7 @@ public class UserProfile extends AppCompatActivity {
                             else categories.add("Brak osiągnięć!");
 
                         }
-                        usernameTextView.setText(username);
+                        setTitle(username+"'s profile");
 
                         adapter = new ArrayAdapter<>(UserProfile.this,
                                 android.R.layout.simple_list_item_1, categories);
@@ -90,6 +88,20 @@ public class UserProfile extends AppCompatActivity {
                 }
             }
         });
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_white_24);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

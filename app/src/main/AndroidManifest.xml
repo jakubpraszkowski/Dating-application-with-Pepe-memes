@@ -39,7 +39,9 @@
             android:exported="false"/>
         <activity
             android:name=".UserProfile"
-            android:exported="false">
+            android:exported="false"
+            android:icon="@drawable/baseline_arrow_white_24"
+            android:launchMode="singleTop">
 
         </activity>
     </application>
