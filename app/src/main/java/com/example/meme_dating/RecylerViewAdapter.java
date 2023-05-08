@@ -4,47 +4,40 @@ import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
@@ -52,14 +45,12 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
-import java.text.SimpleDateFormat;
-
 public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private List<Meme> mItemList;
     private Context context;
-    private Activity myActivity;
+    private final Activity myActivity;
     public RecylerViewAdapter(List<Meme> itemList, Activity activity) {
         mItemList = itemList;
         myActivity = activity;
@@ -156,6 +147,31 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
         String imageUri = mItemList.get(position).url;
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
+
+        viewHolder.imageViewMeme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View popupView = LayoutInflater.from(context).inflate(R.layout.show_full_image_popup, null, false);
+                ImageView imageView = popupView.findViewById(R.id.imageView2);
+                ImageButton closeButton = popupView.findViewById(R.id.imageButton3);;
+                Picasso.get().load(imageUri).into(imageView);
+
+                int width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                int height = ConstraintLayout.LayoutParams.MATCH_PARENT;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
+            }
+        });
+
         viewHolder.authorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
