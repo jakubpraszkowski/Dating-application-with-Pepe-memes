@@ -39,7 +39,10 @@ public class CategoryMenuActivity extends AppCompatActivity {
         binding.appBarCategoryMenu.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "adding memes unavailable in demo", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), "adding memes unavailable in demo", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AddMeme.class);
+                intent.putExtra("user_id", SharedPreferencesManager.getInstance(getApplicationContext()).getUserID());
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;

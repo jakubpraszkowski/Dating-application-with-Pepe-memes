@@ -43,6 +43,10 @@
         </activity>
         <activity
             android:name=".CompareProfile"
+            android:exported="false"/>
+
+        <activity
+            android:name=".AddMeme"
             android:exported="false">
         </activity>
     </application>

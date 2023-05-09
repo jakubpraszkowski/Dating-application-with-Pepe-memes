@@ -109,6 +109,16 @@ class DataBase
             return $count;
         }
     }
+
+    function getCategories()
+    {
+        $this->sql = "SELECT * FROM categories";
+        $result = mysqli_query($this->connect, $this->sql);
+        while($row = mysqli_fetch_assoc($result))
+        $data[] = $row;
+        return json_encode($data);
+    }
+
     function getLatestMeme($cat_id, $u_id)
     {
         $cat_id = $this->prepareData($cat_id);
