@@ -21,9 +21,15 @@ import android.widget.Toast;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
@@ -44,7 +50,7 @@ public class UserProfile extends AppCompatActivity {
     List<String> categories = new ArrayList<>();
     List<Integer> points = new ArrayList<>();
 
-    PieChart pieChart;
+    RadarChart radarChart;
     String username;
 
     @Override
@@ -53,9 +59,6 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.user_profile);
 
         usernameTextView = findViewById(R.id.user_name);
-        categoryPointsListView = findViewById(R.id.listViewMemes);
-
-
 
 
         int userId = getIntent().getIntExtra("user_id", 0);
@@ -68,7 +71,7 @@ public class UserProfile extends AppCompatActivity {
             data[0] = String.valueOf(userId);
             PutData putData = new PutData("https://meme-dating.one.pl/getUserProfile.php", "POST", field, data);
 
-            pieChart = findViewById(R.id.pie_chart);
+            radarChart = findViewById(R.id.radar_chart);
 
 
             if (putData.startPut()) {
@@ -83,28 +86,44 @@ public class UserProfile extends AppCompatActivity {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            username = jsonObject.getString("username");
-
                             String category = jsonObject.optString("title", "Brak kategorii");
-                            int point = jsonObject.optInt("points", 0);
+                            int pointsValue = jsonObject.optInt("points", 0);
 
                             categories.add(category);
-                            points.add(point);
+                            points.add(pointsValue);
                         }
 
-                        ArrayList<PieEntry> entries = new ArrayList<>();
+                        RadarChart radarChart = findViewById(R.id.radar_chart);
+
+                        ArrayList<RadarEntry> entries = new ArrayList<>();
                         for (int i = 0; i < categories.size(); i++) {
-                            entries.add(new PieEntry(points.get(i), categories.get(i)));
+                            entries.add(new RadarEntry(points.get(i)));
                         }
 
-                        PieDataSet dataSet = new PieDataSet(entries, "Categories");
-                        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                        RadarDataSet dataSet = new RadarDataSet(entries, "Categories");
+                        dataSet.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+                        dataSet.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
+                        dataSet.setDrawFilled(true);
+                        dataSet.setFillAlpha(180);
+                        dataSet.setLineWidth(2f);
+                        dataSet.setDrawHighlightCircleEnabled(true);
+                        dataSet.setDrawHighlightIndicators(false);
 
-                        PieData dataPie = new PieData(dataSet);
+                        RadarData dataRadar = new RadarData(dataSet);
 
-                        pieChart.setData(dataPie);
-                        pieChart.invalidate();
+                        ArrayList<String> labels = new ArrayList<>();
+                        for (int i = 0; i < categories.size(); i++) {
+                            labels.add(categories.get(i));
+                        }
 
+                        XAxis xAxis = radarChart.getXAxis();
+                        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+                        radarChart.setData(dataRadar);
+                        radarChart.getDescription().setEnabled(false);
+                        dataSet.setDrawValues(false);
+                        radarChart.getLegend().setEnabled(false);
+                        radarChart.invalidate();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -120,7 +139,6 @@ public class UserProfile extends AppCompatActivity {
 
 
     }
-
 
 
     @Override

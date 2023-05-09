@@ -212,11 +212,11 @@ class DataBase
     {
         $u_id = $this->prepareData($u_id);
 
-        $this->sql = "SELECT u.username, c.title, SUM(ml.reaction) AS points FROM users u
-        JOIN meme_likes ml ON u.u_id = ml.u_id 
-        JOIN memes m ON ml.m_id = m.m_id 
-        JOIN categories c ON m.cat_id = c.cat_id 
-        WHERE u.u_id = ".$u_id."
+        $this->sql = "SELECT u.username, c.title, IFNULL(SUM(ml.reaction), 0) AS points 
+        FROM categories c
+        JOIN users u ON u_id = ".$u_id."
+        LEFT JOIN memes m ON m.cat_id = c.cat_id
+        LEFT JOIN meme_likes ml ON m.m_id = ml.m_id AND u.u_id = ml.u_id 
         GROUP BY u.username, c.title;";
         $data = array();
         $result = mysqli_query($this->connect, $this->sql);
