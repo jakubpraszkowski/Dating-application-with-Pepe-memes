@@ -39,10 +39,8 @@ public class CategoryMenuActivity extends AppCompatActivity {
         binding.appBarCategoryMenu.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getBaseContext(), "adding memes unavailable in demo", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), AddMeme.class);
-                intent.putExtra("user_id", SharedPreferencesManager.getInstance(getApplicationContext()).getUserID());
-                startActivity(intent);
+                startActivityForResult(intent, 2);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -69,7 +67,18 @@ public class CategoryMenuActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(resultCode==2)
+        {
+            if(data.getBooleanExtra("added", false) ){
+                this.recreate();
+            }
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
