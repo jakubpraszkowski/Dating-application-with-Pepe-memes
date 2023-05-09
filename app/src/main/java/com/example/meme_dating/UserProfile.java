@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -94,6 +96,34 @@ public class UserProfile extends AppCompatActivity {
                         setTitle(username+"'s profile");
                         RadarChart radarChart = findViewById(R.id.radar_chart);
 
+                        int min = findMin(points);
+                        int max = findMax(points);
+                        if(max!=0){
+                            if(min > 0){
+                                for (int i = 0; i < points.size(); i++) {
+                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / max);
+                                }
+                            }else if(min < 0){
+                                for (int i = 0; i < points.size(); i++) {
+                                    points.set(i, (points.get(i) + Math.abs(min)) * 100 / max);
+                                }
+                            }else{
+                                for (int i = 0; i < points.size(); i++) {
+                                    points.set(i, (points.get(i)) * 100 / max);
+                                }
+                            }
+                        }else{
+                            if(min > 0){
+                                for (int i = 0; i < points.size(); i++) {
+                                    points.set(i, (points.get(i) - Math.abs(min)) * 100);
+                                }
+                            }else if(min < 0){
+                                for (int i = 0; i < points.size(); i++) {
+                                    points.set(i, (points.get(i) + Math.abs(min)) * 100);
+                                }
+                            }
+                        }
+
                         ArrayList<RadarEntry> entries = new ArrayList<>();
                         for (int i = 0; i < categories.size(); i++) {
                             entries.add(new RadarEntry(points.get(i)));
@@ -118,9 +148,17 @@ public class UserProfile extends AppCompatActivity {
                         XAxis xAxis = radarChart.getXAxis();
                         xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
 
+                        radarChart.getYAxis().setAxisMinimum(0);
+                        radarChart.getYAxis().setAxisMaximum(100);
+                        radarChart.getYAxis().setLabelCount(6, true);
+                        radarChart.getYAxis().setValueFormatter(new ValueFormatter() {
+                            @Override
+                            public String getFormattedValue(float value) {
+                                return value+"%";
+                            }
+                        });
                         radarChart.setData(dataRadar);
                         radarChart.getDescription().setEnabled(false);
-                        dataSet.setDrawValues(false);
                         radarChart.getLegend().setEnabled(false);
                         radarChart.invalidate();
                     } catch (JSONException e) {
@@ -155,5 +193,45 @@ public class UserProfile extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public static Integer findMin(List<Integer> list)
+    {
+
+        // check list is empty or not
+        if (list == null || list.size() == 0) {
+            return Integer.MAX_VALUE;
+        }
+
+        // create a new list to avoid modification
+        // in the original list
+        List<Integer> sortedlist = new ArrayList<>(list);
+
+        // sort list in natural order
+        Collections.sort(sortedlist);
+
+        // first element in the sorted list
+        // would be minimum
+        return sortedlist.get(0);
+    }
+
+    // function return maximum value in an unsorted
+    // list in Java using Collection
+    public static Integer findMax(List<Integer> list)
+    {
+
+        // check list is empty or not
+        if (list == null || list.size() == 0) {
+            return Integer.MIN_VALUE;
+        }
+
+        // create a new list to avoid modification
+        // in the original list
+        List<Integer> sortedlist = new ArrayList<>(list);
+
+        // sort list in natural order
+        Collections.sort(sortedlist);
+
+        // last element in the sorted list would be maximum
+        return sortedlist.get(sortedlist.size() - 1);
     }
 }
