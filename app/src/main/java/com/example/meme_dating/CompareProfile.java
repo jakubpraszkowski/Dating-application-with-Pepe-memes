@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -96,10 +97,10 @@ public class CompareProfile extends AppCompatActivity {
                         }
 
                         radarDataSet1 = new RadarDataSet(entries, username1);
-                        radarDataSet1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-                        radarDataSet1.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
-                        radarDataSet1.setDrawFilled(false);
-                        radarDataSet1.setFillAlpha(180);
+                        radarDataSet1.setColor(Color.rgb(0,255,127));
+                        radarDataSet1.setFillColor(Color.rgb(0,255,127));
+                        radarDataSet1.setDrawFilled(true);
+                        radarDataSet1.setFillAlpha(50);
                         radarDataSet1.setLineWidth(2f);
                         radarDataSet1.setDrawHighlightCircleEnabled(true);
                         radarDataSet1.setDrawHighlightIndicators(false);
@@ -152,10 +153,10 @@ public class CompareProfile extends AppCompatActivity {
                         }
 
                         radarDataSet2 = new RadarDataSet(entries, username2);
-                        radarDataSet2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
-                        radarDataSet2.setFillColor(ColorTemplate.COLORFUL_COLORS[1]);
-                        radarDataSet2.setDrawFilled(false);
-                        radarDataSet2.setFillAlpha(180);
+                        radarDataSet2.setColor(Color.rgb(255,105,180));
+                        radarDataSet2.setFillColor(Color.rgb(255,105,180));
+                        radarDataSet2.setDrawFilled(true);
+                        radarDataSet2.setFillAlpha(50);
                         radarDataSet2.setLineWidth(2f);
                         radarDataSet2.setDrawHighlightCircleEnabled(true);
                         radarDataSet2.setDrawHighlightIndicators(false);
