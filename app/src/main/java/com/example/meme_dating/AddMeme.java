@@ -166,7 +166,7 @@ public class AddMeme extends AppCompatActivity {
             public void onClick(View v) {
                 // utworzenie nowego intentu dla wyboru pliku z galerii
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/png"); // typ pliku do wyświetlenia
+                intent.setType("image/*"); // typ pliku do wyświetlenia
                 startActivityForResult(intent, PICKFILE_RESULT_CODE); // uruchomienie aktywności i oczekiwanie na wynik
             }
         });
