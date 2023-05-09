@@ -36,5 +36,20 @@
         android:name="com.example.meme_dating.ui.category5.Category5Fragment"
         android:label="@string/menu_category5"
         tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category6"
+        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:label="@string/menu_category5"
+        tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category7"
+        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:label="@string/menu_category5"
+        tools:layout="@layout/fragment_meme_scrolling" />
+    <fragment
+        android:id="@+id/nav_category8"
+        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:label="@string/menu_category5"
+        tools:layout="@layout/fragment_meme_scrolling" />
 
 </navigation>
