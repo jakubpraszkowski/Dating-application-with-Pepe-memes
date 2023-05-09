@@ -3,6 +3,7 @@ package com.example.meme_dating;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -32,52 +34,41 @@ public class AddMeme extends AppCompatActivity {
 
     private int PICKFILE_RESULT_CODE;
 
+    private class Categories{
+        public String name;
+        public int id;
+        public Categories(String name, int id){
+            this.name = name;
+            this.id = id;
+        }
+        @Override
+        public String toString() {
+            return this.name;
+        }
+    }
+    List<Categories> categories = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_meme);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_white_24);
+        setTitle("Add meme");
+        categories.add(new Categories("IT", 1));
+        categories.add(new Categories("Funny", 2));
+        categories.add(new Categories("Anime", 3));
+        categories.add(new Categories("Religious", 4));
+        categories.add(new Categories("Dark Humor", 5));
+        categories.add(new Categories("Academical", 7));
+        categories.add(new Categories("Queer", 8));
+        categories.add(new Categories("Gaming", 9));
 
-        try {
-            URL url = new URL("https://meme-dating.one.pl/getCategories.php");
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                String result = response.toString();
-                JSONArray jsonArray = new JSONArray(result);
-
-                ArrayList<String> categories = new ArrayList<>();
-                ArrayList<Integer> cat_id = new ArrayList<>();
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String category = jsonObject.getString("title");
-                    categories.add(category);
-                }
-
-                Spinner categorySpinner = findViewById(R.id.category_spinner);
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(),
-                        android.R.layout.simple_spinner_item, categories);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                categorySpinner.setAdapter(adapter);
-
-            } else {
-                Toast.makeText(getBaseContext(), "Nie można połączyć się z serwerem", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Spinner categorySpinner = findViewById(R.id.category_spinner);
+        ArrayAdapter<Categories> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
 
         Button chooseFileButton = findViewById(R.id.choose_file_button);
         chooseFileButton.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +81,15 @@ public class AddMeme extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
