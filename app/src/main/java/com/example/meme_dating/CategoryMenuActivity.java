@@ -1,5 +1,6 @@
 package com.example.meme_dating;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -75,7 +76,16 @@ public class CategoryMenuActivity extends AppCompatActivity {
         if(resultCode==2)
         {
             if(data.getBooleanExtra("added", false) ){
-                this.recreate();
+                Activity a= this;
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        a.recreate();
+                    }
+                }, 3000);
+
             }
         }
     }

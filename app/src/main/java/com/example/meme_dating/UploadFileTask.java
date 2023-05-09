@@ -25,15 +25,15 @@ public class UploadFileTask extends AsyncTask<Void, Void, String> {
     private String title;
     private String u_id;
     private String urlString;
-    private Uri fileUri;
+    private File file;
 
-    public UploadFileTask(Context context, String cat_id, String title, String u_id, String urlString, Uri fileUri) {
+    public UploadFileTask(Context context, String cat_id, String title, String u_id, String urlString, File file) {
         this.context = context;
         this.cat_id = cat_id;
         this.title = title;
         this.u_id = u_id;
         this.urlString = urlString;
-        this.fileUri = fileUri;
+        this.file = file;
     }
 
     @Override
@@ -65,8 +65,6 @@ public class UploadFileTask extends AsyncTask<Void, Void, String> {
             outputStream.writeBytes(u_id + "\r\n");
 
             // add file parameter
-
-            File file = getFileFromUri(context, fileUri);
             String fileName = file.getName();
             String contentType = URLConnection.guessContentTypeFromName(fileName);
             outputStream.writeBytes("--" + boundary + "\r\n");

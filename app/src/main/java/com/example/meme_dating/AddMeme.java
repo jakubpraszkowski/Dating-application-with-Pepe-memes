@@ -4,6 +4,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
+import com.squareup.picasso.Picasso;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
 
 import org.json.JSONArray;
@@ -35,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,7 +63,10 @@ public class AddMeme extends AppCompatActivity {
 
     private int PICKFILE_RESULT_CODE;
     Spinner categorySpinner;
+    ImageView imageprewiew;
     Uri uri = null;
+    Context context;
+    File file;
 
     public void addMeme(View view) {
         Categories selectedCategory = (Categories) categorySpinner.getSelectedItem();
@@ -66,6 +75,24 @@ public class AddMeme extends AppCompatActivity {
                 @Override
                 public void run() {
                     try  {
+                        Drawable drawable = imageprewiew.getDrawable();
+
+                        // Convert the Drawable to a Bitmap
+                        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+
+                        // Create a file path and name for the image file
+                        String filename = "image.png";
+                        file = new File(context.getFilesDir(), filename);
+
+                        // Compress the Bitmap to PNG format and write it to the file
+                        try {
+                            FileOutputStream fos = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         new UploadFileTask(
                                 getApplicationContext(),
@@ -73,7 +100,7 @@ public class AddMeme extends AppCompatActivity {
                                 edit.getText().toString(),
                                 String.valueOf(SharedPreferencesManager.getInstance(getApplicationContext()).getUserID()),
                                 "https://meme-dating.one.pl/uploadMeme.php",
-                                uri
+                                file
                         ).doInBackground();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -109,6 +136,7 @@ public class AddMeme extends AppCompatActivity {
     List<Categories> categories = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_meme);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -125,6 +153,7 @@ public class AddMeme extends AppCompatActivity {
         categories.add(new Categories("Queer", 8));
         categories.add(new Categories("Gaming", 9));
 
+        imageprewiew = findViewById(R.id.imageprewiew);
         categorySpinner = findViewById(R.id.category_spinner);
         ArrayAdapter<Categories> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,7 +166,7 @@ public class AddMeme extends AppCompatActivity {
             public void onClick(View v) {
                 // utworzenie nowego intentu dla wyboru pliku z galerii
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*"); // typ pliku do wyświetlenia
+                intent.setType("image/png"); // typ pliku do wyświetlenia
                 startActivityForResult(intent, PICKFILE_RESULT_CODE); // uruchomienie aktywności i oczekiwanie na wynik
             }
         });
@@ -156,6 +185,8 @@ public class AddMeme extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null) {
             uri = data.getData();
+
+            Picasso.get().load(uri).into(imageprewiew);
         }
     }
 }
