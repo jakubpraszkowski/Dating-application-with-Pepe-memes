@@ -39,17 +39,17 @@
     <fragment
         android:id="@+id/nav_category6"
         android:name="com.example.meme_dating.ui.category6.Category6Fragment"
-        android:label="@string/menu_category5"
+        android:label="@string/menu_category6"
         tools:layout="@layout/fragment_meme_scrolling" />
     <fragment
         android:id="@+id/nav_category7"
         android:name="com.example.meme_dating.ui.category7.Category7Fragment"
-        android:label="@string/menu_category5"
+        android:label="@string/menu_category7"
         tools:layout="@layout/fragment_meme_scrolling" />
     <fragment
         android:id="@+id/nav_category8"
         android:name="com.example.meme_dating.ui.category8.Category8Fragment"
-        android:label="@string/menu_category5"
+        android:label="@string/menu_category8"
         tools:layout="@layout/fragment_meme_scrolling" />
 
 </navigation>
