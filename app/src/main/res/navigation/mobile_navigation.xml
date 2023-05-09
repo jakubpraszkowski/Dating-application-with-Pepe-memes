@@ -38,17 +38,17 @@
         tools:layout="@layout/fragment_meme_scrolling" />
     <fragment
         android:id="@+id/nav_category6"
-        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:name="com.example.meme_dating.ui.category6.Category6Fragment"
         android:label="@string/menu_category5"
         tools:layout="@layout/fragment_meme_scrolling" />
     <fragment
         android:id="@+id/nav_category7"
-        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:name="com.example.meme_dating.ui.category7.Category7Fragment"
         android:label="@string/menu_category5"
         tools:layout="@layout/fragment_meme_scrolling" />
     <fragment
         android:id="@+id/nav_category8"
-        android:name="com.example.meme_dating.ui.category5.Category5Fragment"
+        android:name="com.example.meme_dating.ui.category8.Category8Fragment"
         android:label="@string/menu_category5"
         tools:layout="@layout/fragment_meme_scrolling" />
 
