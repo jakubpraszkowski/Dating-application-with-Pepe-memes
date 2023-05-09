@@ -153,11 +153,14 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
 
+        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
+        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
         if (mItemList.get(position).reaction == 1) { // liked
             viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
-        } else if (mItemList.get(position).reaction == -1) { // disliked
-            viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
         }
+        else if (mItemList.get(position).reaction == -1) { // disliked
+            viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
+        }else{}
         String imageUri = mItemList.get(position).url;
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
 
