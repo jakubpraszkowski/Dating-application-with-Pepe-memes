@@ -41,7 +41,10 @@
             android:name=".UserProfile"
             android:exported="false">
         </activity>
-
+        <activity
+            android:name=".CompareProfile"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

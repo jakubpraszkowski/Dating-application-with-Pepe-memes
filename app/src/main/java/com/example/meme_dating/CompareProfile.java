@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserProfile extends AppCompatActivity {
+public class CompareProfile extends AppCompatActivity {
 
     ListView categoryPointsListView;
     Button backButton;
@@ -50,16 +50,15 @@ public class UserProfile extends AppCompatActivity {
     List<Integer> points = new ArrayList<>();
 
     RadarChart radarChart;
-    String username;
-    int userId;
+    String username1, username2;
+    RadarDataSet radarDataSet1, radarDataSet2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_profile);
+        setContentView(R.layout.compare_profile);
 
-
-
-        userId = getIntent().getIntExtra("user_id", 0);
+        int userId = getIntent().getIntExtra("user_id", 0);
 
         Handler handler = new Handler();
         handler.post(() -> {
@@ -70,7 +69,6 @@ public class UserProfile extends AppCompatActivity {
             PutData putData = new PutData("https://meme-dating.one.pl/getUserProfile.php", "POST", field, data);
 
             radarChart = findViewById(R.id.radar_chart);
-
 
             if (putData.startPut()) {
                 if (putData.onComplete()) {
@@ -84,31 +82,87 @@ public class UserProfile extends AppCompatActivity {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            username = jsonObject.getString("username");
+                            username1 = jsonObject.getString("username");
                             String category = jsonObject.optString("title", "Brak kategorii");
                             int pointsValue = jsonObject.optInt("points", 0);
 
                             categories.add(category);
                             points.add(pointsValue);
                         }
-                        setTitle(username+"'s profile");
-                        RadarChart radarChart = findViewById(R.id.radar_chart);
 
                         ArrayList<RadarEntry> entries = new ArrayList<>();
                         for (int i = 0; i < categories.size(); i++) {
                             entries.add(new RadarEntry(points.get(i)));
                         }
 
-                        RadarDataSet dataSet = new RadarDataSet(entries, "Categories");
-                        dataSet.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-                        dataSet.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
-                        dataSet.setDrawFilled(true);
-                        dataSet.setFillAlpha(180);
-                        dataSet.setLineWidth(2f);
-                        dataSet.setDrawHighlightCircleEnabled(true);
-                        dataSet.setDrawHighlightIndicators(false);
+                        radarDataSet1 = new RadarDataSet(entries, username1);
+                        radarDataSet1.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+                        radarDataSet1.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
+                        radarDataSet1.setDrawFilled(false);
+                        radarDataSet1.setFillAlpha(180);
+                        radarDataSet1.setLineWidth(2f);
+                        radarDataSet1.setDrawHighlightCircleEnabled(true);
+                        radarDataSet1.setDrawHighlightIndicators(false);
 
-                        RadarData dataRadar = new RadarData(dataSet);
+
+
+                        ArrayList<String> labels = new ArrayList<>();
+                        for (int i = 0; i < categories.size(); i++) {
+                            labels.add(categories.get(i));
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        Handler handler2 = new Handler();
+        handler2.post(() -> {
+            String[] field = new String[1];
+            field[0] = "u_id";
+            String[] data = new String[1];
+            data[0] = String.valueOf(SharedPreferencesManager.getInstance(this).getUserID());
+            PutData putData = new PutData("https://meme-dating.one.pl/getUserProfile.php", "POST", field, data);
+
+            if (putData.startPut()) {
+                if (putData.onComplete()) {
+                    String result = putData.getResult();
+
+                    try {
+                        JSONArray jsonArray = new JSONArray(result);
+
+                        ArrayList<String> categories = new ArrayList<>();
+                        ArrayList<Integer> points = new ArrayList<>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            username2 = jsonObject.getString("username");
+                            String category = jsonObject.optString("title", "Brak kategorii");
+                            int pointsValue = jsonObject.optInt("points", 0);
+
+                            categories.add(category);
+                            points.add(pointsValue);
+                        }
+
+                        ArrayList<RadarEntry> entries = new ArrayList<>();
+                        for (int i = 0; i < categories.size(); i++) {
+                            entries.add(new RadarEntry(points.get(i)));
+                        }
+
+                        radarDataSet2 = new RadarDataSet(entries, username2);
+                        radarDataSet2.setColor(ColorTemplate.COLORFUL_COLORS[1]);
+                        radarDataSet2.setFillColor(ColorTemplate.COLORFUL_COLORS[1]);
+                        radarDataSet2.setDrawFilled(false);
+                        radarDataSet2.setFillAlpha(180);
+                        radarDataSet2.setLineWidth(2f);
+                        radarDataSet2.setDrawHighlightCircleEnabled(true);
+                        radarDataSet2.setDrawHighlightIndicators(false);
+
+                        RadarData radarData = new RadarData();
+                        radarData.addDataSet(radarDataSet1);
+                        radarData.addDataSet(radarDataSet2);
 
                         ArrayList<String> labels = new ArrayList<>();
                         for (int i = 0; i < categories.size(); i++) {
@@ -118,41 +172,29 @@ public class UserProfile extends AppCompatActivity {
                         XAxis xAxis = radarChart.getXAxis();
                         xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-                        radarChart.setData(dataRadar);
+                        radarChart.setData(radarData);
                         radarChart.getDescription().setEnabled(false);
-                        dataSet.setDrawValues(false);
-                        radarChart.getLegend().setEnabled(false);
+                        radarChart.getLegend().setEnabled(true);
                         radarChart.invalidate();
+                        setTitle(username1+ " vs " + username2);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_white_24);
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        if(userId != SharedPreferencesManager.getInstance(getApplicationContext()).getUserID()){
-            getMenuInflater().inflate(R.menu.profile_compare_menu, menu);
-        }
-        return true;
-    }
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }else if(item.getItemId() == R.id.compareProfileMenu) {
-            //Toast.makeText(getBaseContext(), "open your profile here "+ SharedPreferencesManager.getInstance(getApplicationContext()).getUserID(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, CompareProfile.class);
-            intent.putExtra("user_id", userId);
-            startActivity(intent);
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
