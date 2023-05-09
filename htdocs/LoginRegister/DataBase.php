@@ -5,7 +5,7 @@ class DataBase
 {
     public $connect;
     public $data;
-    private $sql;
+    public $sql;
     protected $servername;
     protected $username;
     protected $password;

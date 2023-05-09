@@ -2,11 +2,11 @@
 
 require "LoginRegister/DataBase.php";
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POST['u_id']) && isset($_POST['cat_id']) && isset($_POST['title'])) {    
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POST['u_id']) && isset($_POST['cat_id']) && isset($_POST['title'])) {
 
     $db = new DataBase();
 
-    if ($db->dbConnect()) {        
+    if ($db->dbConnect()) {
         $file = $_FILES['file'];
 
         // Get file properties
@@ -14,14 +14,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POS
         $file_tmp = $file['tmp_name'];
         $file_size = $file['size'];
         $file_error = $file['error'];
-    
+
         // Get file extension
         $file_ext = explode('.', $file_name);
         $file_ext = strtolower(end($file_ext));
-    
+
         // Allowed file types
         $allowed = array('jpg', 'png', 'jpeg','gif');
-    
+
         // Check if the file type is allowed
         if(in_array($file_ext, $allowed)) {
             // Check for errors
@@ -30,25 +30,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POS
                 if($file_size <= 2097152) {
                     // File name
                     $file_name_new = uniqid('', true) . '.' . $file_ext;
-    
+
                     // File destination
                     $file_destination = 'img/' . $file_name_new;
                     $localurl = 'https://meme-dating.one.pl/'. $file_destination;
-    
-                    // Move the file Tu jest git ten plik
+
+                    // Move the file
                     if(move_uploaded_file($file_tmp, $file_destination)) {
-                        
-                        
-                        $db->sql = "INSERT INTO memes VALUES(null, '".$localurl."', '".$_POST['title']."', ".$_POST['cat_id'].", ".$_POST['u_id'].", null);";
-                        echo $db->sql;
-                        // if (mysqli_query($db->connect, $db->sql)) {
-                        //     header("Content-Type: application/json");
-                        //     echo json_encode(["success" => true]);
-                        // } else {
-                        //     header("Content-Type: application/json");
-                        //     echo json_encode(["success" => false, "message" => "BŁĄD! Nie można przesłać zapytania!."]);
-                        // }
-                        
+
+                        $u_id = $db->prepareData($_POST['u_id']);
+                        $cat_id = $db->prepareData($_POST['cat_id']);
+                        $title = $db->prepareData($_POST['title']);
+                        $localurl = $db->prepareData($localurl);
+
+                        $db->sql = "INSERT INTO memes VALUES(null, '".$localurl."', '".$title."', ".$cat_id.", ".$u_id .", NOW());";
+
+                     	if (mysqli_query($db->connect, $db->sql)) {
+                       		header("Content-Type: application/json");
+                	       	echo json_encode(["success" => true]);
+                      	} else {
+        	               	header("Content-Type: application/json");
+	                       	echo json_encode(["success" => false, "message" => "BŁĄD! Nie można przesłać zapytania!."]);
+			            }
+
                     } else {
                         header("Content-Type: application/json");
                         echo json_encode(["success" => false, "message" => "BŁĄD! Plik nie został przesłany!."]);
@@ -71,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file']) && isset($_POS
     }
 
 } else {
-    
+
     header("Content-Type: application/json");
     echo json_encode(["success" => false, "message" => "Invalid request"]);
 }
