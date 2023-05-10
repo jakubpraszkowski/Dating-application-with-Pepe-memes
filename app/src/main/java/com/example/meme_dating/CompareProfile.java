@@ -98,15 +98,15 @@ public class CompareProfile extends AppCompatActivity {
                         if(max!=0){
                             if(min > 0){
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / max);
+                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / (max - Math.abs(min)));
                                 }
                             }else if(min < 0){
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i) + Math.abs(min)) * 100 / max);
+                                    points.set(i, (points.get(i) + Math.abs(min)) * 100 / (max + Math.abs(min)));
                                 }
                             }else{
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i)) * 100 / max);
+                                    points.set(i, (points.get(i)) * 100 / (max + Math.abs(min)));
                                 }
                             }
                         }else{
@@ -175,15 +175,15 @@ public class CompareProfile extends AppCompatActivity {
                         if(max!=0){
                             if(min > 0){
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / max);
+                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / (max - Math.abs(min)));
                                 }
                             }else if(min < 0){
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i) + Math.abs(min)) * 100 / max);
+                                    points.set(i, (points.get(i) + Math.abs(min)) * 100 / (max + Math.abs(min)));
                                 }
                             }else{
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i)) * 100 / max);
+                                    points.set(i, (points.get(i)) * 100 / (max + Math.abs(min)));
                                 }
                             }
                         }else{

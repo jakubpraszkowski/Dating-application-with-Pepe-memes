@@ -101,7 +101,7 @@ public class UserProfile extends AppCompatActivity {
                         if(max!=0){
                             if(min > 0){
                                 for (int i = 0; i < points.size(); i++) {
-                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / (max + Math.abs(min)));
+                                    points.set(i, (points.get(i) - Math.abs(min)) * 100 / (max - Math.abs(min)));
                                 }
                             }else if(min < 0){
                                 for (int i = 0; i < points.size(); i++) {
