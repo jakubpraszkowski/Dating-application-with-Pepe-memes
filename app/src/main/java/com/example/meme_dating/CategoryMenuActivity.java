@@ -1,5 +1,6 @@
 package com.example.meme_dating;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,17 +40,15 @@ public class CategoryMenuActivity extends AppCompatActivity {
         binding.appBarCategoryMenu.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "adding memes here", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AddMeme.class);
+                startActivityForResult(intent, 2);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_main)
-                .setOpenableLayout(drawer)
-                .build();
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_main).setOpenableLayout(drawer).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_category_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -69,17 +68,41 @@ public class CategoryMenuActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(resultCode==2)
+        {
+            if(data.getBooleanExtra("added", false) ){
+                Activity a= this;
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
+                        a.recreate();
+                    }
+                }, 3000);
+
+            }
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.category_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_my_profile) {
-            Toast.makeText(getBaseContext(), "open your profile here", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(), "open your profile here "+ SharedPreferencesManager.getInstance(getApplicationContext()).getUserID(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, UserProfile.class);
+            intent.putExtra("user_id", SharedPreferencesManager.getInstance(getApplicationContext()).getUserID());
+            startActivity(intent);
             return true;
         }else if (item.getItemId() == R.id.action_my_instruction) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

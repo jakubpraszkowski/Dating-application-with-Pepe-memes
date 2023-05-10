@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -34,27 +33,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 import com.example.meme_dating.ui.SharedPreferencesManager;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.vishnusivadas.advanced_httpurlconnection.PutData;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -62,6 +56,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Meme> mItemList;
     private Context context;
     private final Activity myActivity;
+
     public RecylerViewAdapter(List<Meme> itemList, Activity activity) {
         mItemList = itemList;
         myActivity = activity;
@@ -69,7 +64,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                      int viewType) {
         context = parent.getContext();
         if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meme, parent, false);
@@ -121,41 +117,50 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             imageButtonMenuPopup = itemView.findViewById(R.id.imageButtonMenuPopup);
         }
     }
+
     private class LoadingviewHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
+
         public LoadingviewHolder(@NonNull View itemView) {
             super(itemView);
             progressBar = itemView.findViewById(R.id.progressbar);
         }
     }
+
     private void showLoadingView(LoadingviewHolder viewHolder, int position) {
         // Progressbar would be displayed
     }
-    private static String hoursDifference(LocalDateTime date1, LocalDateTime date2) {
+
+    private static String hoursDifference(LocalDateTime date1,
+                                          LocalDateTime date2) {
         long diffInMin = ChronoUnit.MINUTES.between(date2, date1);
-        if(diffInMin < 60 ){
-            return diffInMin+"min";
-        }else if((diffInMin/60) < 24){
-            return ChronoUnit.HOURS.between(date2, date1)+"h";
-        }else {
-            return ChronoUnit.DAYS.between(date2, date1)+"d";
+        if (diffInMin < 60) {
+            return diffInMin + "min";
+        } else if ((diffInMin / 60) < 24) {
+            return ChronoUnit.HOURS.between(date2, date1) + "h";
+        } else {
+            return ChronoUnit.DAYS.between(date2, date1) + "d";
         }
     }
+
     @SuppressLint("RestrictedApi")
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
         viewHolder.textID.setText(String.valueOf(mItemList.get(position).u_id));
         viewHolder.titleTextView.setText(mItemList.get(position).title);
         viewHolder.authorTextView.setText(mItemList.get(position).u_name);
-        viewHolder.categoryText.setText(mItemList.get(position).cat_name+"/");
+        viewHolder.categoryText.setText(mItemList.get(position).cat_name + "/");
         viewHolder.dateTextView.setText(hoursDifference(LocalDateTime.now(ZoneId.of("UTC+2")), mItemList.get(position).uploadDate));
         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
 
-        if(mItemList.get(position).reaction == 1){ //liked
+        viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
+        viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
+        if (mItemList.get(position).reaction == 1) { // liked
             viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
-        }else if(mItemList.get(position).reaction == 0){ //disliked
-            viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
         }
+        else if (mItemList.get(position).reaction == -1) { // disliked
+            viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
+        }else{}
         String imageUri = mItemList.get(position).url;
         Picasso.get().load(imageUri).into(viewHolder.imageViewMeme);
 
@@ -167,72 +172,62 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId()== R.id.action_download){
-                            if(isStoragePermissionGranted()){
+                        if (item.getItemId() == R.id.action_download) {
+                            if (isStoragePermissionGranted()) {
                                 String state = Environment.getExternalStorageState();
-                                if (Environment.MEDIA_MOUNTED.equals(state)){
-                                    Picasso.get()
-                                            .load(imageUri)
-                                            .into(new Target() {
-                                                @Override
-                                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                                    saveImageToDownloadFolder(Uri.parse(imageUri).getLastPathSegment(), bitmap);
-                                                }
-
-                                                @Override
-                                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                                }
-
-                                                @Override
-                                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                                }
-                                            });
-                                } else if(Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)){
-
+                                if (Environment.MEDIA_MOUNTED.equals(state)) {
+                                    Picasso.get().load(imageUri).into(new Target() {
+                                        @Override
+                                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                            saveImageToDownloadFolder(Uri.parse(imageUri).getLastPathSegment(), bitmap);
+                                        }
+                                        @Override
+                                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                        }
+                                        @Override
+                                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                        }
+                                    });
+                                } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
                                     Toast.makeText(context, "Storage is read only", Toast.LENGTH_SHORT).show();
                                 } else {
-
                                     Toast.makeText(context, "Storage does not exist", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
-                        if (item.getItemId() == R.id.action_share){
-                            Picasso.get()
-                                .load(imageUri)
-                                .into(new Target() {
-                                    @Override
-                                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                        ContentValues values = new ContentValues();
-                                        values.put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg");
-                                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                            values.put(MediaStore.Images.Media.IS_PENDING, 1);
-                                        }
-                                        Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                                        try {
-                                            OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
-                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                                            outputStream.close();
-                                            values.clear();
-                                            values.put(MediaStore.Images.Media.IS_PENDING, 0);
-                                            context.getContentResolver().update(uri, values, null, null);
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                        Intent share = new Intent(Intent.ACTION_SEND);
-                                        share.setType("image/jpeg");
-                                        share.putExtra(Intent.EXTRA_STREAM, uri);
-                                        startActivity(context, Intent.createChooser(share, "Select"), null );
+                        if (item.getItemId() == R.id.action_share) {
+                            Picasso.get().load(imageUri).into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    ContentValues values = new ContentValues();
+                                    values.put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg");
+                                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                        values.put(MediaStore.Images.Media.IS_PENDING, 1);
                                     }
-                                    @Override
-                                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                    Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                    try {
+                                        OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                                        outputStream.close();
+                                        values.clear();
+                                        values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                                        context.getContentResolver().update(uri, values, null, null);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                    @Override
-                                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                    }
-                                });
+                                    Intent share = new Intent(Intent.ACTION_SEND);
+                                    share.setType("image/jpeg");
+                                    share.putExtra(Intent.EXTRA_STREAM, uri);
+                                    startActivity(context, Intent.createChooser(share, "Select"), null);
+                                }
+                                @Override
+                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                }
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                }
+                            });
                         }
                         return false;
                     }
@@ -246,7 +241,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             public void onClick(View view) {
                 View popupView = LayoutInflater.from(context).inflate(R.layout.show_full_image_popup, null, false);
                 ImageView imageView = popupView.findViewById(R.id.imageView2);
-                ImageButton closeButton = popupView.findViewById(R.id.imageButton3);;
+                ImageButton closeButton = popupView.findViewById(R.id.imageButton3);
                 Picasso.get().load(imageUri).into(imageView);
 
                 int width = ConstraintLayout.LayoutParams.MATCH_PARENT;
@@ -268,13 +263,15 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.authorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "open profile of user with id: "+mItemList.get(position).u_id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), UserProfile.class);
+                intent.putExtra("user_id", mItemList.get(position).u_id);
+                view.getContext().startActivity(intent);
             }
         });
         viewHolder.likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mItemList.get(position).reaction == 1) {         //remove like
+                if (mItemList.get(position).reaction == 1) { // remove like
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -285,7 +282,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).likes = mItemList.get(position).likes-1;
+                                        mItemList.get(position).likes = mItemList.get(position).likes - 1;
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
                                         viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
@@ -296,8 +293,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             }
                         }
                     });
-                }
-                else if (mItemList.get(position).reaction == 0) {   //change from dislike to like
+                } else if (mItemList.get(position).reaction == -1) { // change from dislike to like
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -308,7 +304,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes-1;
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes - 1;
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
@@ -329,20 +325,18 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).likes = mItemList.get(position).likes+1;
+                                        mItemList.get(position).likes = mItemList.get(position).likes + 1;
                                         mItemList.get(position).reaction = 1;
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
                                         viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
-
                                     }
                                 }
                             }
                         }
                     });
-                }
-                else{                                               //add like
+                } else { // add like
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -353,13 +347,12 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).likes = mItemList.get(position).likes+1;
+                                        mItemList.get(position).likes = mItemList.get(position).likes + 1;
                                         mItemList.get(position).reaction = 1;
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
                                         viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
-
                                     }
                                 }
                             }
@@ -371,7 +364,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         viewHolder.dislikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mItemList.get(position).reaction == 0) {         //remove dislike
+                if (mItemList.get(position).reaction == -1) { // remove dislike
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -382,7 +375,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes-1;
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes - 1;
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg);
@@ -393,8 +386,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             }
                         }
                     });
-                }
-                else if (mItemList.get(position).reaction == 1) {   //change from like to dislike
+                } else if (mItemList.get(position).reaction ==
+                        1) { // change from like to dislike
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
@@ -405,7 +398,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).likes = mItemList.get(position).likes-1;
+                                        mItemList.get(position).likes = mItemList.get(position).likes - 1;
                                         mItemList.get(position).reaction = 3;
                                         viewHolder.likes.setText(String.valueOf(mItemList.get(position).likes));
                                         viewHolder.likes.setBackgroundResource(R.drawable.like_button_bg);
@@ -421,42 +414,39 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         @Override
                         public void run() {
                             String[] field = {"m_id", "u_id", "reaction"};
-                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "0"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "-1"};
                             PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes+1;
-                                        mItemList.get(position).reaction = 0;
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes + 1;
+                                        mItemList.get(position).reaction = -1;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
-
                                     }
                                 }
                             }
                         }
                     });
-                }
-                else{                                               //add dislike
+                } else { // add dislike
                     Handler handler = new Handler();
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             String[] field = {"m_id", "u_id", "reaction"};
-                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "0"};
+                            String[] data = {String.valueOf(mItemList.get(position).m_id), String.valueOf(SharedPreferencesManager.getInstance(context).getUserID()), "-1"};
                             PutData putData = new PutData("https://meme-dating.one.pl/addReaction.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     try {
-                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes+1;
-                                        mItemList.get(position).reaction = 0;
+                                        mItemList.get(position).dislikes = mItemList.get(position).dislikes + 1;
+                                        mItemList.get(position).reaction = -1;
                                         viewHolder.dislikes.setText(String.valueOf(mItemList.get(position).dislikes));
                                         viewHolder.dislikes.setBackgroundResource(R.drawable.like_button_bg_selected);
                                         Log.d("likes", putData.getData());
                                     } catch (Throwable t) {
-
                                     }
                                 }
                             }
@@ -466,9 +456,10 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         });
     }
-    public boolean isStoragePermissionGranted(){
+
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 Log.v("LOG", "Permission granted");
                 return true;
             } else {
@@ -476,19 +467,20 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ActivityCompat.requestPermissions(myActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }else{
+        } else {
             Log.v("LOG", "Permission is granted");
             return true;
         }
     }
-    public void saveImageToDownloadFolder(String imageFile, Bitmap ibitmap){
+
+    public void saveImageToDownloadFolder(String imageFile, Bitmap ibitmap) {
         try {
             File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), imageFile);
             int counter = 1;
             String newFileName = imageFile;
             String extension = newFileName.substring(newFileName.lastIndexOf("."));
-            while(filePath.exists()){
-                newFileName = imageFile.substring(0, imageFile.lastIndexOf('.') )+"("+counter+")"+extension;
+            while (filePath.exists()) {
+                newFileName = imageFile.substring(0, imageFile.lastIndexOf('.')) + "(" + counter + ")" + extension;
                 filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), newFileName);
                 counter++;
             }
@@ -496,8 +488,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ibitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
-            Toast.makeText(context,  "Saved "+newFileName+" in Download Folder", Toast.LENGTH_SHORT).show();
-        } catch (Exception e){
+            Toast.makeText(context, "Saved " + newFileName + " in Download Folder", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
